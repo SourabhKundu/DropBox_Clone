@@ -62,14 +62,6 @@
         <td th:text="${file.name}"></td>
         <td><a th:href="@{/file{id}(id = ${file.id})}" th:text="Download"></a></td>
         <td>
-            <form th:action="@{/edit}">
-                <input th:type="hidden" th:name="fileId" th:value="${file.id}">
-                <input th:type="submit" th:value="Edit"/>
-            </form>
-
-            <form th:action="@{/delete=file{id}(id = ${file.id})}">
-                <input th:type="submit" th:value="Delete"/>
-            </form>
             <div id="action-div">
                 <form th:action="@{/edit}" th:if="${fileId} != ${file.id}">
                     <input th:type="hidden" th:name="fileId" th:value="${file.id}">
