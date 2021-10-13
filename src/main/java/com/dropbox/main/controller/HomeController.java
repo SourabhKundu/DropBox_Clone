@@ -54,4 +54,12 @@ public class HomeController {
         fileService.delete(fileId);
         return "redirect:/";
     }
+
+    @GetMapping("/edit")
+    public String editPage(@RequestParam int fileId,Model model){
+        System.out.println(fileId);
+        model.addAttribute("edit","true");
+        model.addAttribute("fileId", fileId);
+        return getHome(model);
+    }
 }
