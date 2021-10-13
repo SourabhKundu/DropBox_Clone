@@ -43,9 +43,8 @@ public class HomeController {
     @GetMapping("file{fileId}")
     public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable("fileId") int id) throws FileNotFoundException {
         File file = fileService.getFile(id);
-        System.out.println(file.getName());
         return ResponseEntity.ok().contentType(MediaType.parseMediaType(file.getType()))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment:filename=\"" + file.getName() + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
                 .body(new ByteArrayResource((file.getData())));
     }
 }
