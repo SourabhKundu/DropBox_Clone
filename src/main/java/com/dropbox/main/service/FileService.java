@@ -13,7 +13,7 @@ import java.util.Objects;
 @Service
 public class FileService {
 
-    private FileRepository fileRepository;
+    private final FileRepository fileRepository;
 
     @Autowired
     public FileService(FileRepository fileRepository) {
