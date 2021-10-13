@@ -50,7 +50,6 @@ public class HomeController {
 
     @GetMapping("/delete/file{fileId}")
     public String deleteFile(@PathVariable int fileId) {
-        System.out.println("delete");
         fileService.delete(fileId);
         return "redirect:/";
     }
@@ -64,6 +63,7 @@ public class HomeController {
 
     @PostMapping("/update/file{fileId}")
     public String updateFile(@PathVariable int fileId,  @RequestParam("file") MultipartFile file) throws IOException {
-        return "home";
+        fileService.update(fileId,file);
+        return "redirect:/";
     }
 }
