@@ -29,6 +29,18 @@ public class FileService {
         fileRepository.save(file);
     }
 
+    public void update(int fileId, MultipartFile multipartFile) throws IOException {
+        Optional<File> optionalFile = fileRepository.findById(fileId);
+        if (optionalFile.isPresent()) {
+             File existingFile = optionalFile.get();
+             String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+             File file = new File(existingFile.getId(), fileName, multipartFile.getContentType(), multipartFile.getBytes());
+             fileRepository.save(file);
+        } else {
+            throw new FileNotFoundException("file not found");
+        }
+    }
+
     public File getFile(int id) throws FileNotFoundException {
         Optional<File> optionalFile = fileRepository.findById(id);
         if (optionalFile.isPresent()) {

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Drop Box</title>
     <style>
        .upload-main{
        width:30%;
@@ -28,6 +28,16 @@
         input[type="file"]{
         height:50px;
         }
+
+        #action-div {
+          display: flex;
+          flex-direction: row;
+        }
+
+        .files-table-row {
+            text-align: center;
+        }
+
     </style>
 </head>
 <body>
@@ -41,13 +51,13 @@
 <br><br>
 <div class="download-main">
 <table>
-    <tr>
+    <tr class="files-table-row">
         <th th:text="ID"></th>
         <th th:text="Name"></th>
         <th th:text="Download"></th>
         <th th:text="Action"></th>
     </tr>
-    <tr th:each="file : ${files}">
+    <tr th:each="file : ${files}" class="files-table-row">
         <td th:text="${file.id}"></td>
         <td th:text="${file.name}"></td>
         <td><a th:href="@{/file{id}(id = ${file.id})}" th:text="Download"></a></td>
@@ -60,6 +70,19 @@
             <form th:action="@{/delete=file{id}(id = ${file.id})}">
                 <input th:type="submit" th:value="Delete"/>
             </form>
+            <div id="action-div">
+                <form th:action="@{/edit}" th:if="${fileId} != ${file.id}">
+                    <input th:type="hidden" th:name="fileId" th:value="${file.id}">
+                    <input th:type="submit" th:value="Edit"/>
+                </form>
+                <form th:if="${edit} and ${fileId} == ${file.id}" th:action="@{/update/file{id}(id = ${file.id})}" method="post" enctype="multipart/form-data">
+                    <input type="file" class="myFile" name="file" multiple required >
+                    <button class="div-one" type="submit">replace file</button>
+                </form>
+                <form th:action="@{/delete/file{id}(id = ${file.id})}">
+                    <input th:type="submit" th:value="Delete"/>
+                </form>
+            </div>
         </td>
     </tr>
 </table>

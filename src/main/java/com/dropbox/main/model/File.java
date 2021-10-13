@@ -44,11 +44,20 @@ public class File {
     public File() {
     }
 
+    public File(int id, String name, String type, byte[] data) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.data = data;
+    }
+
     public File(String name, String type, byte[] data) {
         this.name = name;
         this.type = type;
         this.data = data;
     }
+
+
 
     public int getId() {
         return id;

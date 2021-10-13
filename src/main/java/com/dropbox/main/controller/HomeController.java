@@ -27,6 +27,11 @@ public class HomeController {
         this.fileService = fileService;
     }
 
+    @ModelAttribute
+    public void addModelAttributes(Model model) {
+        model.addAttribute("edit", "false");
+    }
+
     @GetMapping("/")
     public String getHome(Model model) {
         List<File> files = fileService.getFiles();
@@ -48,11 +53,22 @@ public class HomeController {
                 .body(new ByteArrayResource((file.getData())));
     }
 
-    @GetMapping("/delete=file{fileId}")
+    @GetMapping("/delete/file{fileId}")
     public String deleteFile(@PathVariable int fileId) {
-        System.out.println("delete");
         fileService.delete(fileId);
         return "redirect:/";
     }
 
+    @GetMapping("/edit")
+    public String editPage(@RequestParam int fileId, Model model) {
+        model.addAttribute("edit", "true");
+        model.addAttribute("fileId", fileId);
+        return getHome(model);
+    }
+
+    @PostMapping("/update/file{fileId}")
+    public String updateFile(@PathVariable int fileId, @RequestParam("file") MultipartFile file) throws IOException {
+        fileService.update(fileId, file);
+        return "redirect:/";
+    }
 }
