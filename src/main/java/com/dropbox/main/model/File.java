@@ -38,6 +38,15 @@ public class File {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Timestamp updatedAt;
+    
+    public File() {
+    }
+
+    public File(String name, String type, byte[] data) {
+        this.name = name;
+        this.type = type;
+        this.data = data;
+    }
 
 
 }
