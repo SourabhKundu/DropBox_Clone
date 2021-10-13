@@ -56,6 +56,7 @@
                 <input th:type="hidden" th:name="fileId" th:value="${file.id}">
                 <input th:type="submit" th:value="Edit"/>
             </form>
+
             <form th:action="@{/delete=file{id}(id = ${file.id})}">
                 <input th:type="submit" th:value="Delete"/>
             </form>
