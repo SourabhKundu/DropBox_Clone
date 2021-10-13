@@ -10,7 +10,6 @@
     <input type="file" id="myFile" name="file" multiple required>
     <input type="submit">
 </form>
-
 <table>
     <tr>
         <th th:text="ID"></th>
@@ -23,6 +22,5 @@
         <td><a th:href="@{/file{id}(id = ${file.id})}" th:text="Download"></a></td>
     </tr>
 </table>
-
 </body>
 </html>

@@ -95,5 +95,4 @@ public class File {
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
-
 }
