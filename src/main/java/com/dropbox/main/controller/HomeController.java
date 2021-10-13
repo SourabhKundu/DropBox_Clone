@@ -48,7 +48,7 @@ public class HomeController {
                 .body(new ByteArrayResource((file.getData())));
     }
 
-    @GetMapping("/delete=file{fileId}")
+    @GetMapping("/delete/file{fileId}")
     public String deleteFile(@PathVariable int fileId) {
         System.out.println("delete");
         fileService.delete(fileId);
@@ -57,9 +57,13 @@ public class HomeController {
 
     @GetMapping("/edit")
     public String editPage(@RequestParam int fileId,Model model){
-        System.out.println(fileId);
         model.addAttribute("edit","true");
         model.addAttribute("fileId", fileId);
         return getHome(model);
+    }
+
+    @PostMapping("/update/file{fileId}")
+    public String updateFile(@PathVariable int fileId,  @RequestParam("file") MultipartFile file) throws IOException {
+        return "home";
     }
 }
