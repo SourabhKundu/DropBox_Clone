@@ -27,6 +27,8 @@ public class HomeController {
 
     @GetMapping("/")
     public String getHome(Model model) {
+        List<File> files = fileService.getFiles();
+        model.addAttribute("files", files);
         return "main";
     }
 
