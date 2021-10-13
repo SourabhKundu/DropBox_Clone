@@ -20,5 +20,9 @@ public class FileService {
         this.fileRepository = fileRepository;
     }
 
-
+    public void save(MultipartFile multipartFile) throws IOException {
+        String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+        File file = new File(fileName, multipartFile.getContentType(), multipartFile.getBytes());
+        fileRepository.save(file);
+    }
 }
