@@ -27,6 +27,11 @@ public class HomeController {
         this.fileService = fileService;
     }
 
+    @ModelAttribute
+    public void addModelAttributes(Model model) {
+        model.addAttribute("edit", "false");
+    }
+
     @GetMapping("/")
     public String getHome(Model model) {
         List<File> files = fileService.getFiles();
@@ -55,15 +60,15 @@ public class HomeController {
     }
 
     @GetMapping("/edit")
-    public String editPage(@RequestParam int fileId,Model model){
-        model.addAttribute("edit","true");
+    public String editPage(@RequestParam int fileId, Model model) {
+        model.addAttribute("edit", "true");
         model.addAttribute("fileId", fileId);
         return getHome(model);
     }
 
     @PostMapping("/update/file{fileId}")
-    public String updateFile(@PathVariable int fileId,  @RequestParam("file") MultipartFile file) throws IOException {
-        fileService.update(fileId,file);
+    public String updateFile(@PathVariable int fileId, @RequestParam("file") MultipartFile file) throws IOException {
+        fileService.update(fileId, file);
         return "redirect:/";
     }
 }
