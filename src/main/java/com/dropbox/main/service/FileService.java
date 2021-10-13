@@ -29,8 +29,16 @@ public class FileService {
         fileRepository.save(file);
     }
 
+    public File getFile(int id) throws FileNotFoundException {
+        Optional<File> optionalFile = fileRepository.findById(id);
+        if (optionalFile.isPresent()) {
+            return optionalFile.get();
+        } else {
+            throw new FileNotFoundException("file not found");
+        }
+    }
+
     public List<File> getFiles() {
         return fileRepository.findAll();
     }
-
 }
