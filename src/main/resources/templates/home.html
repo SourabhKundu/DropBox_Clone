@@ -11,5 +11,18 @@
     <input type="submit">
 </form>
 
+<table>
+    <tr>
+        <th th:text="ID"></th>
+        <th th:text="Name"></th>
+        <th th:text="Download"></th>
+    </tr>
+    <tr th:each="file : ${files}">
+        <td th:text="${file.id}"></td>
+        <td th:text="${file.name}"></td>
+        <td><a th:href="@{/file{id}(id = ${file.id})}" th:text="Download"></a></td>
+    </tr>
+</table>
+
 </body>
 </html>
