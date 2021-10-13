@@ -48,6 +48,7 @@ public class HomeController {
                 .body(new ByteArrayResource((file.getData())));
     }
 
+
     @GetMapping("/delete=file{fileId}")
     public String deleteFile(@PathVariable int fileId) {
         System.out.println("delete");
