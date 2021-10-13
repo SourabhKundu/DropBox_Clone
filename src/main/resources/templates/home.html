@@ -3,13 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+       .upload-main{
+       width:30%;
+       margin:auto;
+       height:30%;
+       }
+       .download-main{
+       width:60%;
+       margin:auto;
+       height:30%;
+       border: 1px solid black;
+       }
+       .div-one{
+       height:20px;
+       }
+       table, td, th {
+        border: 1px solid black;
+        }
+        table {
+        width: 100%;
+        border-collapse: collapse;
+        }
+        input[type="file"]{
+        height:50px;
+        }
+    </style>
 </head>
 <body>
-
+<h2 align="center">Dropbox</h2>
+<div class="upload-main">
 <form th:action="@{/upload}" method="post" enctype="multipart/form-data">
-    <input type="file" id="myFile" name="file" multiple required>
-    <input type="submit">
+    <input type="file" id="myFile" name="file" multiple required >
+    <button class="div-one" type="submit">Upload file</button>
 </form>
+</div>
+<br><br>
+<div class="download-main">
 <table>
     <tr>
         <th th:text="ID"></th>
@@ -22,5 +52,6 @@
         <td><a th:href="@{/file{id}(id = ${file.id})}" th:text="Download"></a></td>
     </tr>
 </table>
+</div>
 </body>
 </html>

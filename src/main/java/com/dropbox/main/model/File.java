@@ -7,8 +7,9 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "Files")
+@Table(name = "files")
 public class File {
+
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
@@ -19,6 +20,7 @@ public class File {
             sequenceName = "global_id_sequence",
             allocationSize = 1
     )
+
     @Column(name = "id")
     private int id;
 
@@ -28,7 +30,7 @@ public class File {
     @Column(name = "type")
     private String type;
 
-    @Column(name = "data", columnDefinition = "clob")
+    @Column(name = "data")
     private byte[] data;
 
     @CreationTimestamp
