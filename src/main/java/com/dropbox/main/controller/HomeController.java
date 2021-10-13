@@ -47,4 +47,11 @@ public class HomeController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
                 .body(new ByteArrayResource((file.getData())));
     }
+
+    @GetMapping("/delete=file{fileId}")
+    public String deleteFile(@PathVariable int fileId) {
+        System.out.println("delete");
+        fileService.delete(fileId);
+        return "redirect:/";
+    }
 }
