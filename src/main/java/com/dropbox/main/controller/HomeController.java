@@ -71,4 +71,9 @@ public class HomeController {
         fileService.update(fileId, file);
         return "redirect:/";
     }
+
+    @GetMapping("/share/file{fileId}")
+    public String generateUrl(@PathVariable("fileId") int fileId) {
+        return "sharefile";
+    }
 }
