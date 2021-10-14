@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -73,7 +74,10 @@ public class HomeController {
     }
 
     @GetMapping("/share/file{fileId}")
-    public String generateUrl(@PathVariable("fileId") int fileId) {
+    public String generateUrl(@PathVariable("fileId") int fileId, Model model) {
+        String url = MvcUriComponentsBuilder
+                .fromMethodName(HomeController.class, "downloadFile", fileId).build().toString();
+        model.addAttribute("url", url);
         return "sharefile";
     }
 }
