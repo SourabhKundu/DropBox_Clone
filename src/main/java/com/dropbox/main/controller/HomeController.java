@@ -7,6 +7,8 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +24,12 @@ import java.util.List;
 public class HomeController {
 
     private final FileService fileService;
+    @Autowired
+    private JavaMailSender javaMailSender;
 
     @Autowired
     public HomeController(FileService fileService) {
+//        this.javaMailSender=javaMailSender;
         this.fileService = fileService;
     }
 
@@ -83,6 +88,11 @@ public class HomeController {
 
     @PostMapping("/share")
     public String sendEmail(@RequestParam("url") String url, @RequestParam("email") String email) {
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(email);
+        msg.setSubject("Shared File Link");
+        msg.setText("click on link to download file : "+url);
+        javaMailSender.send(msg);
         return "redirect:/";
     }
 }
