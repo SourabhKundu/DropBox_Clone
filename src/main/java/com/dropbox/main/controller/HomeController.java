@@ -7,10 +7,13 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -21,9 +24,11 @@ import java.util.List;
 public class HomeController {
 
     private final FileService fileService;
+    private final JavaMailSender javaMailSender;
 
     @Autowired
-    public HomeController(FileService fileService) {
+    public HomeController(FileService fileService, JavaMailSender javaMailSender) {
+        this.javaMailSender=javaMailSender;
         this.fileService = fileService;
     }
 
@@ -69,6 +74,24 @@ public class HomeController {
     @PostMapping("/update/file{fileId}")
     public String updateFile(@PathVariable int fileId, @RequestParam("file") MultipartFile file) throws IOException {
         fileService.update(fileId, file);
+        return "redirect:/";
+    }
+
+    @GetMapping("/share/file{fileId}")
+    public String generateUrl(@PathVariable("fileId") int fileId, Model model) {
+        String url = MvcUriComponentsBuilder
+                .fromMethodName(HomeController.class, "downloadFile", fileId).build().toString();
+        model.addAttribute("url", url);
+        return "sharefile";
+    }
+
+    @PostMapping("/share")
+    public String sendEmail(@RequestParam("url") String url, @RequestParam("email") String email) {
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(email);
+        msg.setSubject("Shared File Link");
+        msg.setText("click on link to download file : "+url);
+        javaMailSender.send(msg);
         return "redirect:/";
     }
 }

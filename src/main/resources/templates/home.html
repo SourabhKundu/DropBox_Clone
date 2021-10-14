@@ -74,6 +74,9 @@
                 <form th:action="@{/delete/file{id}(id = ${file.id})}">
                     <input th:type="submit" th:value="Delete"/>
                 </form>
+                <form th:action="@{/share/file{id}(id = ${file.id})}">
+                    <input th:type="submit" th:value="Share"/>
+                </form>
             </div>
         </td>
     </tr>

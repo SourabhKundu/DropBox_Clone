@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Share File</title>
+    <style>
+        #main-div {
+            text-align: center;
+            background-color: #e3efef;
+        }
+    </style>
+</head>
+<body>
+<div id="main-div">
+    <form th:action="@{/share}" th:method="post">
+        <p th:text="'Share file link to your connections...!'"></p>
+        <input th:type="text" th:name="email" placeholder="Enter email...!" size="40">
+        <input th:type="hidden" th:name="url" th:value="${url}">
+        <input th:type="submit" th:value="Share">
+    </form>
+</div>
+</body>
+</html>
