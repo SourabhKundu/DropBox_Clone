@@ -80,4 +80,9 @@ public class HomeController {
         model.addAttribute("url", url);
         return "sharefile";
     }
+
+    @PostMapping("/share")
+    public String sendEmail(@RequestParam("url") String url, @RequestParam("email") String email) {
+        return "redirect:/";
+    }
 }
