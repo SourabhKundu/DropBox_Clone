@@ -24,12 +24,11 @@ import java.util.List;
 public class HomeController {
 
     private final FileService fileService;
-    @Autowired
-    private JavaMailSender javaMailSender;
+    private final JavaMailSender javaMailSender;
 
     @Autowired
-    public HomeController(FileService fileService) {
-//        this.javaMailSender=javaMailSender;
+    public HomeController(FileService fileService, JavaMailSender javaMailSender) {
+        this.javaMailSender=javaMailSender;
         this.fileService = fileService;
     }
 
