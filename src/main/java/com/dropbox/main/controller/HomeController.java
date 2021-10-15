@@ -98,6 +98,13 @@ public class HomeController {
         return "sharefile";
     }
 
+    @PostMapping(value = "/share", params = {"removeEmail"})
+    public String removeEmail(@RequestParam("removeEmail") String email, Model model) {
+        emailsSelected.remove(email);
+        model.addAttribute("emailsSelected",emailsSelected);
+        return "sharefile";
+    }
+
     @PostMapping("/share")
     public String sendEmail(@RequestParam("url") String url, @RequestParam("email") String email) {
         SimpleMailMessage msg = new SimpleMailMessage();
