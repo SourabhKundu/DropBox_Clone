@@ -17,7 +17,9 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/")
@@ -27,7 +29,7 @@ public class HomeController {
     private final JavaMailSender javaMailSender;
     private int fileId;
     private String url;
-    private List<String> emailsShared;
+    private Set<String> emailsSelected = new HashSet<>();
 
     @Autowired
     public HomeController(FileService fileService, JavaMailSender javaMailSender) {
@@ -89,6 +91,13 @@ public class HomeController {
         return "sharefile";
     }
 
+    @PostMapping(value = "/share", params = {"add"})
+    public String addEmail(@RequestParam("email") String email, Model model) {
+        emailsSelected.add(email);
+        model.addAttribute("emailsSelected",emailsSelected);
+        return "sharefile";
+    }
+
     @PostMapping("/share")
     public String sendEmail(@RequestParam("url") String url, @RequestParam("email") String email) {
         SimpleMailMessage msg = new SimpleMailMessage();
@@ -96,6 +105,7 @@ public class HomeController {
         msg.setSubject("Shared File Link");
         msg.setText("click on link to download file : "+url);
         javaMailSender.send(msg);
+        emailsSelected.clear();
         return "redirect:/";
     }
 }
