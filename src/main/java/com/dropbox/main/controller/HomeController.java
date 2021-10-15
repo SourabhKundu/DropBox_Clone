@@ -105,7 +105,7 @@ public class HomeController {
     @PostMapping(value = "/share", params = {"add"})
     public String addEmail(@RequestParam("email") String email, Model model) {
         emailsSelected.add(email);
-        model.addAttribute("emailsSelected",emailsSelected);
+        model.addAttribute("emailsSelected", emailsSelected);
         model.addAttribute("guestUsers", userService.getAllUsers());
         return "sharefile";
     }
@@ -113,7 +113,7 @@ public class HomeController {
     @PostMapping(value = "/share", params = {"removeEmail"})
     public String removeEmail(@RequestParam("removeEmail") String email, Model model) {
         emailsSelected.remove(email);
-        model.addAttribute("emailsSelected",emailsSelected);
+        model.addAttribute("emailsSelected", emailsSelected);
         model.addAttribute("guestUsers", userService.getAllUsers());
         return "sharefile";
     }
@@ -122,12 +122,12 @@ public class HomeController {
     public String sendFile(@RequestParam("edit") boolean access) throws MessagingException, IOException {
         int userId = 5;
         int[] guestIds = userService.getIdsByEmail(emailsSelected);
-        ownerGuestService.save(userId,fileId,guestIds, access);
-        for(String email : emailsSelected){
+        ownerGuestService.save(userId, fileId, guestIds, access);
+        for (String email : emailsSelected) {
             SimpleMailMessage msg = new SimpleMailMessage();
             msg.setTo(email);
             msg.setSubject("Shared File Link");
-            msg.setText("click on link to download file : "+url);
+            msg.setText("click on link to download file : " + url);
             javaMailSender.send(msg);
         }
         emailsSelected.clear();

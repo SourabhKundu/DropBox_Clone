@@ -10,6 +10,6 @@ import java.util.Set;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    @Query(value = "select u.id from users u where u.email in (?1)",nativeQuery = true)
+    @Query(value = "select u.id from users u where u.email in (?1)", nativeQuery = true)
     public int[] findIdByEmail(Set<String> emails);
 }

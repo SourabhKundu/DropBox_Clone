@@ -3,7 +3,7 @@ package com.dropbox.main.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name="users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User {
 
     @Id
@@ -49,7 +49,9 @@ public class User {
         return name;
     }
 
-    public void setName(String name) { this.name = name; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getEmail() {
         return email;
@@ -63,6 +65,7 @@ public class User {
         return password;
     }
 
-    public void setPassword(String password) { this.password = password;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

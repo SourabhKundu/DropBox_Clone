@@ -18,11 +18,11 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    public int[] getIdsByEmail(Set<String> emails){
+    public int[] getIdsByEmail(Set<String> emails) {
         return userRepository.findIdByEmail(emails);
     }
 }
