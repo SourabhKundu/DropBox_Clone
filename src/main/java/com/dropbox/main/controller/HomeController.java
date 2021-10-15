@@ -25,6 +25,9 @@ public class HomeController {
 
     private final FileService fileService;
     private final JavaMailSender javaMailSender;
+    private int fileId;
+    private String url;
+    private List<String> emailsShared;
 
     @Autowired
     public HomeController(FileService fileService, JavaMailSender javaMailSender) {
@@ -78,10 +81,11 @@ public class HomeController {
     }
 
     @GetMapping("/share/file{fileId}")
-    public String generateUrl(@PathVariable("fileId") int fileId, Model model) {
+    public String shareFile(@PathVariable int fileId, Model model) {
         String url = MvcUriComponentsBuilder
                 .fromMethodName(HomeController.class, "downloadFile", fileId).build().toString();
-        model.addAttribute("url", url);
+        this.fileId = fileId;
+        this.url = url;
         return "sharefile";
     }
 
