@@ -1,21 +1,33 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org/%22%3E%22%3E">
 <head>
     <meta charset="UTF-8">
-    <title>Share File</title>
-    <style>
-        #main-div {
-            text-align: center;
-            background-color: #e3efef;
-        }
-    </style>
+<title>Down Load File</title>
+<style>
+    #main-div {
+        text-align: center;
+        background-color: #e3efef;
+    }
+</style>
 </head>
 <body>
 <div id="main-div">
     <form th:action="@{/share}" th:method="post">
         <p th:text="'Share file link to your connections...!'"></p>
-        <input th:type="text" th:name="email" placeholder="Enter email...!" size="40">
-        <input th:type="hidden" th:name="url" th:value="${url}">
+        <div th:each="email : ${emailsSelected}" th:if="${emailsSelected} != null">
+            <input name="removeEmail" th:type="submit" th:value="${email}">
+        </div>
+        <input list="publishedDateList" name="email"/>
+        <datalist id="publishedDateList">
+            <div th:each="guestUser : ${guestUsers}">
+                <option><p th:text="${guestUser.email}"></p></option>
+            </div>
+        </datalist>
+        <input name="add" th:type="submit" th:value="Add"><br>
+        <input th:type="radio" id="edit" th:name="edit" th:value="true">
+        <label for="edit">Edit</label>
+        <input th:type="radio" id="view" th:name="edit" th:value="false" checked>
+        <label for="view">View</label><br>
         <input th:type="submit" th:value="Share">
     </form>
 </div>
