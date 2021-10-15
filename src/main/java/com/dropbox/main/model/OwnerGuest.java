@@ -31,4 +31,53 @@ public class OwnerGuest {
     @Column(name = "access")
     private boolean access;
 
+    public OwnerGuest() {
+    }
+
+    public OwnerGuest(int userId, int fileId, int guestId, boolean access) {
+        this.userId = userId;
+        this.fileId = fileId;
+        this.guestId = guestId;
+        this.access = access;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(int fileId) {
+        this.fileId = fileId;
+    }
+
+    public int getGuestId() {
+        return guestId;
+    }
+
+    public void setGuestId(int guestId) {
+        this.guestId = guestId;
+    }
+
+    public boolean isAccess() {
+        return access;
+    }
+
+    public void setAccess(boolean access) {
+        this.access = access;
+    }
 }
