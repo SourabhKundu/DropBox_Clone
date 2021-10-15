@@ -12,8 +12,12 @@ import java.util.List;
 @Service
 public class OwnerGuestService {
 
+    private final OwnerGuestRepository ownerGuestRepository;
+
     @Autowired
-    private OwnerGuestRepository ownerGuestRepository;
+    public OwnerGuestService(OwnerGuestRepository ownerGuestRepository) {
+        this.ownerGuestRepository = ownerGuestRepository;
+    }
 
     public void save(int userId, int fileId, int[] guestIds, boolean access) {
 
