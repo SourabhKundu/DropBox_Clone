@@ -2,6 +2,7 @@ package com.dropbox.main.controller;
 
 import com.dropbox.main.model.File;
 import com.dropbox.main.service.FileService;
+import com.dropbox.main.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -26,14 +27,16 @@ import java.util.Set;
 public class HomeController {
 
     private final FileService fileService;
+    private final UserService userService;
     private final JavaMailSender javaMailSender;
     private int fileId;
     private String url;
     private Set<String> emailsSelected = new HashSet<>();
 
     @Autowired
-    public HomeController(FileService fileService, JavaMailSender javaMailSender) {
-        this.javaMailSender=javaMailSender;
+    public HomeController(FileService fileService, JavaMailSender javaMailSender,UserService userService) {
+        this.userService = userService;
+        this.javaMailSender = javaMailSender;
         this.fileService = fileService;
     }
 
@@ -88,6 +91,7 @@ public class HomeController {
                 .fromMethodName(HomeController.class, "downloadFile", fileId).build().toString();
         this.fileId = fileId;
         this.url = url;
+        model.addAttribute("guestUsers", userService.getAllUsers());
         return "sharefile";
     }
 
@@ -95,6 +99,7 @@ public class HomeController {
     public String addEmail(@RequestParam("email") String email, Model model) {
         emailsSelected.add(email);
         model.addAttribute("emailsSelected",emailsSelected);
+        model.addAttribute("guestUsers", userService.getAllUsers());
         return "sharefile";
     }
 
@@ -102,6 +107,7 @@ public class HomeController {
     public String removeEmail(@RequestParam("removeEmail") String email, Model model) {
         emailsSelected.remove(email);
         model.addAttribute("emailsSelected",emailsSelected);
+        model.addAttribute("guestUsers", userService.getAllUsers());
         return "sharefile";
     }
 
