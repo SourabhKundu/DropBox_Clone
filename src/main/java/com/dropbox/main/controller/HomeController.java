@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import javax.mail.MessagingException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashSet;
@@ -111,14 +112,4 @@ public class HomeController {
         return "sharefile";
     }
 
-    @PostMapping("/share")
-    public String sendEmail(@RequestParam("url") String url, @RequestParam("email") String email) {
-        SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo(email);
-        msg.setSubject("Shared File Link");
-        msg.setText("click on link to download file : "+url);
-        javaMailSender.send(msg);
-        emailsSelected.clear();
-        return "redirect:/";
-    }
 }

@@ -18,4 +18,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public int[] getIdsByEmail(Set<String> emails){
+        return userRepository.findIdByEmail(emails);
+    }
 }
