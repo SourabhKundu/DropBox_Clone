@@ -1,6 +1,5 @@
 package com.dropbox.main.service;
 
-import com.dropbox.main.model.Notification;
 import com.dropbox.main.model.OwnerGuest;
 import com.dropbox.main.repository.OwnerGuestRepository;
 import org.springframework.beans.factory.annotation.Autowired;

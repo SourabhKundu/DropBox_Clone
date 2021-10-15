@@ -2,6 +2,7 @@ package com.dropbox.main.controller;
 
 import com.dropbox.main.model.File;
 import com.dropbox.main.service.FileService;
+import com.dropbox.main.service.OwnerGuestService;
 import com.dropbox.main.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -29,13 +30,18 @@ public class HomeController {
 
     private final FileService fileService;
     private final UserService userService;
+    private final OwnerGuestService ownerGuestService;
     private final JavaMailSender javaMailSender;
     private int fileId;
     private String url;
     private Set<String> emailsSelected = new HashSet<>();
 
     @Autowired
-    public HomeController(FileService fileService, JavaMailSender javaMailSender,UserService userService) {
+    public HomeController(FileService fileService,
+                          JavaMailSender javaMailSender,
+                          UserService userService,
+                          OwnerGuestService ownerGuestService) {
+        this.ownerGuestService = ownerGuestService;
         this.userService = userService;
         this.javaMailSender = javaMailSender;
         this.fileService = fileService;
@@ -112,4 +118,19 @@ public class HomeController {
         return "sharefile";
     }
 
+    @PostMapping("/share")
+    public String sendFile(@RequestParam("edit") boolean access) throws MessagingException, IOException {
+        int userId = 5;
+        int[] guestIds = userService.getIdsByEmail(emailsSelected);
+        ownerGuestService.save(userId,fileId,guestIds, access);
+        for(String email : emailsSelected){
+            SimpleMailMessage msg = new SimpleMailMessage();
+            msg.setTo(email);
+            msg.setSubject("Shared File Link");
+            msg.setText("click on link to download file : "+url);
+            javaMailSender.send(msg);
+        }
+        emailsSelected.clear();
+        return "redirect:/";
+    }
 }
