@@ -3,4 +3,8 @@ heroku:
   only:
     - master
   script:
+    - git init
+    - git add .
+    - git commit -m 'Initial commit'
+    - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/blogtopost.git
     - git push -f heroku master
