@@ -51,6 +51,7 @@ public class FileService {
     }
 
     public List<File> getFiles() {
+        System.out.println("in the service++++++++++++++++++++++");
         return fileRepository.findAllFiles();
     }
 
