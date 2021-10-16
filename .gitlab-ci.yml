@@ -6,4 +6,4 @@ heroku:
     - git config --global user.email "narasimha.nandikonda.17.1@mountblue.tech"
     - git config --global user.name "NarasimhaMount"
     - git remote set-url heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/blogtopost.git
-    - git push -u heroku master
+    - git push -f heroku master
