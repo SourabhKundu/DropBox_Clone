@@ -3,6 +3,8 @@ heroku:
   only:
     - master
   script:
+    - git config --global user.email "narasimha.nandikonda.17.1@mountblue.tech"
+    - git config --global user.name "NarasimhaMount"
     - git init
     - git add .
     - git commit -m 'Initial commit'
