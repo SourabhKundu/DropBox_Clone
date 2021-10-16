@@ -5,7 +5,8 @@ heroku:
   script:
     - git config --global user.email "narasimha.nandikonda.17.1@mountblue.tech"
     - git config --global user.name "NarasimhaMount"
-    - git checkout heroku master
+    - git init
+    - git remote add origin https://heroku:$HEROKU_API_KEY@git.heroku.com/blogtopost.git
     - git add .
     - git commit -m 'Initial commit'
     - git push -u heroku master
