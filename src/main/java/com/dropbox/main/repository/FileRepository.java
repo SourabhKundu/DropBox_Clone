@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface FileRepository extends JpaRepository<File, Integer> {
     @Query(value = "select f.id, f.name from files f", nativeQuery = true)
-    List<File> findAllFiles();
+    List<File> allFiles();
 }

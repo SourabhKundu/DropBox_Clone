@@ -52,7 +52,7 @@ public class FileService {
 
     public List<File> getFiles() {
         System.out.println("in the service++++++++++++++++++++++");
-        return fileRepository.findAllFiles();
+        return fileRepository.allFiles();
     }
 
     public void delete(int fileId) {
