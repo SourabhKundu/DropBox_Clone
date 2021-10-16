@@ -5,6 +5,4 @@ heroku:
   script:
     - git config --global user.email "narasimha.nandikonda.17.1@mountblue.tech"
     - git config --global user.name "NarasimhaMount"
-    - git add .
-    - git commit -m 'Initial commit'
     - git push -u heroku master
