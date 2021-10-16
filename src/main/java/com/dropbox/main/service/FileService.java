@@ -51,7 +51,7 @@ public class FileService {
     }
 
     public List<File> getFiles() {
-        return fileRepository.findAll();
+        return fileRepository.findAllFiles();
     }
 
     public void delete(int fileId) {
