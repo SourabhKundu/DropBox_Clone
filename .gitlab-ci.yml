@@ -5,7 +5,6 @@ heroku:
   script:
     - git config --global user.email "narasimha.nandikonda.17.1@mountblue.tech"
     - git config --global user.name "NarasimhaMount"
-    - heroku git:remote -a blogtopost
     - git add .
     - git commit -m 'Initial commit'
     - git push -f heroku master
