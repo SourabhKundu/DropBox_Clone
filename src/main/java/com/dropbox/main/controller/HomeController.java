@@ -74,7 +74,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String getHome(Model model) {
-        //model.addAttribute("files", fileService.getFiles());
+        model.addAttribute("files", fileService.getFiles());
         return "home";
     }
 
