@@ -5,12 +5,14 @@ import com.dropbox.main.service.FileService;
 import com.dropbox.main.service.OwnerGuestService;
 import com.dropbox.main.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 
 @Controller
@@ -31,19 +34,36 @@ public class HomeController {
     private final FileService fileService;
     private final UserService userService;
     private final OwnerGuestService ownerGuestService;
-    private final JavaMailSender javaMailSender;
     private int fileId;
     private String url;
     private Set<String> emailsSelected = new HashSet<>();
 
+    @Bean
+    public JavaMailSender getJavaMailSender() {
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost("smtp.gmail.com");
+        mailSender.setPort(587);
+
+        mailSender.setUsername("narasimha8186094547@gmail.com");
+        mailSender.setPassword("fubwbpumstgwnxef");
+
+        Properties props = mailSender.getJavaMailProperties();
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.debug", "true");
+
+        return mailSender;
+    }
+
+    JavaMailSender javaMailSender = getJavaMailSender();
+
     @Autowired
     public HomeController(FileService fileService,
-                          JavaMailSender javaMailSender,
                           UserService userService,
                           OwnerGuestService ownerGuestService) {
         this.ownerGuestService = ownerGuestService;
         this.userService = userService;
-        this.javaMailSender = javaMailSender;
         this.fileService = fileService;
     }
 
