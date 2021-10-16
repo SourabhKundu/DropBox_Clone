@@ -28,6 +28,7 @@ import java.util.Properties;
 import java.util.Set;
 
 @Controller
+@RequestMapping("/")
 public class HomeController {
 
     private final FileService fileService;
