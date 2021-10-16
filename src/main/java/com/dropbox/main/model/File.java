@@ -30,9 +30,6 @@ public class File {
     @Column(name = "type")
     private String type;
 
-    @Column(name = "data")
-    private byte[] data;
-
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private Timestamp createdAt;
@@ -44,17 +41,15 @@ public class File {
     public File() {
     }
 
-    public File(int id, String name, String type, byte[] data) {
+    public File(int id, String name, String type) {
         this.id = id;
         this.name = name;
         this.type = type;
-        this.data = data;
     }
 
-    public File(String name, String type, byte[] data) {
+    public File(String name, String type) {
         this.name = name;
         this.type = type;
-        this.data = data;
     }
 
     public int getId() {
@@ -79,14 +74,6 @@ public class File {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public byte[] getData() {
-        return data;
-    }
-
-    public void setData(byte[] data) {
-        this.data = data;
     }
 
     public Timestamp getCreatedAt() {

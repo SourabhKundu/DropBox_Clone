@@ -17,16 +17,21 @@ import java.util.Optional;
 public class FileService {
 
     private final FileRepository fileRepository;
+    private final StorageService storageService;
 
     @Autowired
-    public FileService(FileRepository fileRepository) {
+    public FileService(FileRepository fileRepository, StorageService storageService) {
         this.fileRepository = fileRepository;
+        this.storageService = storageService;
+
     }
 
     public void save(MultipartFile multipartFile) throws IOException {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
-        File file = new File(fileName, multipartFile.getContentType(), multipartFile.getBytes());
-        fileRepository.save(file);
+        File file = new File(fileName, multipartFile.getContentType());
+        File file1 = fileRepository.save(file);
+        String awsFileName = file1.getId() + "_" + fileName;
+        this.storageService.uploadFile(multipartFile, awsFileName);
     }
 
     public void update(int fileId, MultipartFile multipartFile) throws IOException {
@@ -34,7 +39,7 @@ public class FileService {
         if (optionalFile.isPresent()) {
             File existingFile = optionalFile.get();
             String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
-            File file = new File(existingFile.getId(), fileName, multipartFile.getContentType(), multipartFile.getBytes());
+            File file = new File(existingFile.getId(), fileName, multipartFile.getContentType());
             fileRepository.save(file);
         } else {
             throw new FileNotFoundException("file not found");
@@ -51,7 +56,6 @@ public class FileService {
     }
 
     public List<File> getFiles() {
-        System.out.println("in the service++++++++++++++++++++++");
         return fileRepository.allFiles();
     }
 

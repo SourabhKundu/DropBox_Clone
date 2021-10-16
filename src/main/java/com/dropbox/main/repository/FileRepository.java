@@ -11,6 +11,8 @@ import java.util.List;
 @Repository
 public interface FileRepository extends JpaRepository<File, Integer> {
     @Transactional
-    @Query(value = "select f.id, f.name from files f", nativeQuery = true)
+    @Query(value = "select * from files f", nativeQuery = true)
     List<File> allFiles();
+
+    File save(File file);
 }

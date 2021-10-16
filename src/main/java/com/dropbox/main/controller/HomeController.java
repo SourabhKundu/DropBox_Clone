@@ -3,6 +3,7 @@ package com.dropbox.main.controller;
 import com.dropbox.main.model.File;
 import com.dropbox.main.service.FileService;
 import com.dropbox.main.service.OwnerGuestService;
+import com.dropbox.main.service.StorageService;
 import com.dropbox.main.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -74,7 +75,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String getHome(Model model) {
-        //model.addAttribute("files", fileService.getFiles());
+        model.addAttribute("files", fileService.getFiles());
         return "home";
     }
 
@@ -84,13 +85,13 @@ public class HomeController {
         return "redirect:/";
     }
 
-    @GetMapping("file{fileId}")
-    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable("fileId") int id) throws FileNotFoundException {
-        File file = fileService.getFile(id);
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType(file.getType()))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
-                .body(new ByteArrayResource((file.getData())));
-    }
+//    @GetMapping("file{fileId}")
+//    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable("fileId") int id) throws FileNotFoundException {
+//        File file = fileService.getFile(id);
+//        return ResponseEntity.ok().contentType(MediaType.parseMediaType(file.getType()))
+//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
+//                .body(new ByteArrayResource((file.getData())));
+//    }
 
     @GetMapping("/delete/file{fileId}")
     public String deleteFile(@PathVariable int fileId) {
