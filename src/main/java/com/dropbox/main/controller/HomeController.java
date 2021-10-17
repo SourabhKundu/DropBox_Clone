@@ -1,6 +1,7 @@
 package com.dropbox.main.controller;
 
 import com.dropbox.main.model.File;
+import com.dropbox.main.model.Notification;
 import com.dropbox.main.model.OwnerGuest;
 import com.dropbox.main.service.FileService;
 import com.dropbox.main.service.OwnerGuestService;
@@ -171,4 +172,13 @@ public class HomeController {
         return "redirect:/";
     }
 
+    @GetMapping("/notification")
+    public String notification(Model model){
+        int loginUserId = 1;
+        List<OwnerGuest> list = ownerGuestService.findByGuestId(loginUserId);
+        List<Notification> notificationList = ownerGuestService.getNotificationList(list);
+        model.addAttribute("notificationList",notificationList);
+        model.addAttribute("fileId",fileId);
+        return "notification";
+    }
 }
