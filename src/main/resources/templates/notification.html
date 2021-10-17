@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+<title> Notification</title>
+<style>
+       .upload-main{
+       width:30%;
+       margin:auto;
+       height:30%;
+       }
+       .download-main{
+       width:60%;
+       margin:auto;
+       height:30%;
+       border: 1px solid black;
+       }
+       .div-one{
+       height:20px;
+       }
+       table, td, th {
+        border: 1px solid black;
+        }
+        table {
+        width: 100%;
+        border-collapse: collapse;
+        }
+        input[type="file"]{
+        height:50px;
+        }
+    </style>
+</head>
+<body>
+<h2 align="center">Notification</h2>
+<br><br>
+<div class="download-main">
+    <table>
+        <tr>
+            <th th:text="sharedby"></th>
+            <th th:text="Name"></th>
+            <th th:text="Download"></th>
+            <th th:text="Action"></th>
+        </tr>
+        <tr th:each="notification : ${notificationList}">
+            <td th:text="${notification.sharedBy}"></td>
+            <td th:text="${notification.fileName}"></td>
+            <td><a th:href="@{/file{id}(id = ${notification.fileId})}" th:text="Download"></a></td>
+            <td>
+                <form th:action="@{/editNotification}" th:if="${notification.access}">
+                    <input th:type="hidden" th:name="fileId" th:value="${notification.fileId}">
+                    <input th:type="submit" th:value="Edit"/>
+                </form>
+                <div th:if="${edit} and ${fileId} == ${notification.fileId}">
+                    <form th:action="@{/update/file{id}(id = ${notification.fileId})}" method="post" enctype="multipart/form-data">
+                        <input type="file" class="myFile" name="file" multiple required >
+                        <button class="div-one" type="submit">replace file</button>
+                    </form>
+                </div>
+
+
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
