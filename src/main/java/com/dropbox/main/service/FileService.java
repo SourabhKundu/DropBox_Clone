@@ -40,6 +40,8 @@ public class FileService {
             File existingFile = optionalFile.get();
             String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
             File file = new File(existingFile.getId(), fileName, multipartFile.getContentType());
+            storageService.deleteFile(existingFile.getId() + "_" + existingFile.getName());
+            storageService.uploadFile(multipartFile, existingFile.getId() + "_" + fileName);
             fileRepository.save(file);
         } else {
             throw new FileNotFoundException("file not found");
