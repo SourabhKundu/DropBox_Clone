@@ -1,6 +1,7 @@
 package com.dropbox.main.controller;
 
 import com.dropbox.main.model.File;
+import com.dropbox.main.model.OwnerGuest;
 import com.dropbox.main.service.FileService;
 import com.dropbox.main.service.OwnerGuestService;
 import com.dropbox.main.service.StorageService;
@@ -21,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import javax.mail.MessagingException;
-import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashSet;
@@ -157,7 +157,7 @@ public class HomeController {
 
     @PostMapping("/share")
     public String sendFile(@RequestParam("edit") boolean access) throws MessagingException, IOException {
-        int userId = 5;
+        int userId = 1;
         int[] guestIds = userService.getIdsByEmail(emailsSelected);
         ownerGuestService.save(userId, fileId, guestIds, access);
         for (String email : emailsSelected) {
@@ -170,4 +170,5 @@ public class HomeController {
         emailsSelected.clear();
         return "redirect:/";
     }
+
 }
