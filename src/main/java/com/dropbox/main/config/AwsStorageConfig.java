@@ -12,14 +12,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AwsStorageConfig {
 
-    @Value("${cloud.aws.credentials.access-key}")
-    private String accessKey;
-
-    @Value("${cloud.aws.credentials.secret-key}")
-    private String accessSecret;
-
-    @Value("${cloud.aws.region.static}")
-    private String region;
+//    @Value("${cloud.aws.credentials.access-key}")
+//    private String accessKey;
+//
+//    @Value("${cloud.aws.credentials.secret-key}")
+//    private String accessSecret;
+//
+//    @Value("${cloud.aws.region.static}")
+//    private String region;
 
     @Bean
     public AmazonS3 generateS3Client() {
