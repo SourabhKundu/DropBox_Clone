@@ -5,12 +5,12 @@
 <title>Login</title>
 </head>
 <body>
-<form th:action="@{/login}" >
+<form th:action="@{/login}"  method="post">
     Email : <input type="text" name="username" placeholder="Enter Email"/><br>
     Password : <input type="password" name="password" placeholder="Enter Password"/><br>
     <input type="submit" name="login" value="Login">
     <br>
-    SignUp <a href="/" th:href="@{/signup}">Sign Up here</a>
+    Register <a href="/" th:href="@{/signup}">Sign Up here</a>
 </form>
 </body>
 </html>
