@@ -37,10 +37,11 @@ public class User {
     public User() {
     }
 
-    public User(String username, String email, String password) {
-        this.name = username;
+    public User(String name, String email, String password, Collection<Role> roles) {
+        this.name = name;
         this.email = email;
         this.password = password;
+        this.roles = roles;
     }
 
     public int getId() {
@@ -73,5 +74,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
     }
 }
