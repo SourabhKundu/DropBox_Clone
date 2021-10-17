@@ -45,18 +45,4 @@ public class OwnerGuestService {
         return ownerGuestRepository.getByGuestId(id);
     }
 
-    public List<Notification> getNotificationList(List<OwnerGuest> list){
-        List<Notification> notificationList = new ArrayList<>();
-        for(OwnerGuest object : list){
-            Optional<File> optionalFile = fileRepository.findById(object.getFileId());
-            Optional<User> optionalUser = userRepository.findById(object.getUserId());
-            if (optionalFile.isPresent() && optionalUser.isPresent()){
-                File file = optionalFile.get();
-                User user = optionalUser.get();
-                Notification notification = new Notification(object.getFileId(), file.getName(),user.getName(), object.isAccess());
-                notificationList.add(notification);
-            }
-        }
-        return notificationList;
-    }
 }
