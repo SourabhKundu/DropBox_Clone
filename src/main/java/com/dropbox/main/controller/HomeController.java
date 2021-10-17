@@ -102,6 +102,7 @@ public class HomeController {
     @GetMapping("/delete/file{fileId}")
     public String deleteFile(@PathVariable int fileId) throws FileNotFoundException {
         File file = fileService.delete(fileId);
+        storageService.deleteFile(file.getId() + "_" + file.getName());
         return "redirect:/";
     }
 
