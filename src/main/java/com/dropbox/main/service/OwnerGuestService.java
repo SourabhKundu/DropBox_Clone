@@ -1,6 +1,7 @@
 package com.dropbox.main.service;
 
 import com.dropbox.main.model.File;
+import com.dropbox.main.model.Notification;
 import com.dropbox.main.model.OwnerGuest;
 import com.dropbox.main.model.User;
 import com.dropbox.main.repository.FileRepository;
@@ -45,4 +46,13 @@ public class OwnerGuestService {
         return ownerGuestRepository.getByGuestId(id);
     }
 
+    public List<Notification> getNotificationList(List<OwnerGuest> list){
+        List<Notification> notificationList = new ArrayList<>();
+        for(OwnerGuest object : list){
+            Optional<File> optionalFile = fileRepository.findById(object.getFileId());
+            Optional<User> optionalUser = userRepository.findById(object.getUserId());
+
+        }
+        return notificationList;
+    }
 }
