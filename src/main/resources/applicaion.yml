@@ -1,0 +1,14 @@
+cloud:
+  aws:
+    credentials:
+      access-key:AKIA4BIFJKA5AJUHLKVM
+      secret-key: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
+    region:
+      static: ap-south-1
+    stack:
+      auto: false
+
+application:
+  bucket:
+    name: dropboxstorage
+
