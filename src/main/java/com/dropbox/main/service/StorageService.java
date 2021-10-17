@@ -18,8 +18,8 @@ import java.util.Objects;
 @Service
 public class StorageService {
 
-    @Value("${application.bucket.name}")
-    private String bucketName;
+//    @Value("${application.bucket.name}")
+    private String bucketName = "dropboxstorage";
 
     private final AmazonS3 amazonS3;
 
