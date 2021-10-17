@@ -35,6 +35,7 @@ public class HomeController {
     private final FileService fileService;
     private final UserService userService;
     private final OwnerGuestService ownerGuestService;
+    private final StorageService storageService;
     private int fileId;
     private String url;
     private Set<String> emailsSelected = new HashSet<>();
@@ -62,10 +63,12 @@ public class HomeController {
     @Autowired
     public HomeController(FileService fileService,
                           UserService userService,
+                          StorageService storageService,
                           OwnerGuestService ownerGuestService) {
         this.ownerGuestService = ownerGuestService;
         this.userService = userService;
         this.fileService = fileService;
+        this.storageService = storageService;
     }
 
     @ModelAttribute
@@ -85,13 +88,15 @@ public class HomeController {
         return "redirect:/";
     }
 
-//    @GetMapping("file{fileId}")
-//    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable("fileId") int id) throws FileNotFoundException {
-//        File file = fileService.getFile(id);
-//        return ResponseEntity.ok().contentType(MediaType.parseMediaType(file.getType()))
-//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
-//                .body(new ByteArrayResource((file.getData())));
-//    }
+    @GetMapping("/download/file{fileId}")
+    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable("fileId") int id) throws FileNotFoundException {
+        File file = fileService.getFile(id);
+        String fileName = file.getId() + "_" + file.getName();
+        byte[] fileData = storageService.downloadFile(fileName);
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType(file.getType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                .body(new ByteArrayResource(fileData));
+    }
 
     @GetMapping("/delete/file{fileId}")
     public String deleteFile(@PathVariable int fileId) {

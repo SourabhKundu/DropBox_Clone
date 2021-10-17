@@ -60,7 +60,7 @@
     <tr th:each="file : ${files}" class="files-table-row">
         <td th:text="${file.id}"></td>
         <td th:text="${file.name}"></td>
-        <td><a th:href="@{/file{id}(id = ${file.id})}" th:text="Download"></a></td>
+        <td><a th:href="@{/download/file{id}(id = ${file.id})}" th:text="Download"></a></td>
         <td>
             <div id="action-div">
                 <form th:action="@{/edit}" th:if="${fileId} != ${file.id}">

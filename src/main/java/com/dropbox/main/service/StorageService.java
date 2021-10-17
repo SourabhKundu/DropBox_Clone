@@ -2,13 +2,15 @@ package com.dropbox.main.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.amazonaws.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Objects;
@@ -16,16 +18,36 @@ import java.util.Objects;
 @Service
 public class StorageService {
 
-    @Value("${application.bucket.name")
+    @Value("${application.bucket.name}")
     private String bucketName;
 
+    private final AmazonS3 amazonS3;
+
     @Autowired
-    private AmazonS3 amazonS3;
+    public StorageService(AmazonS3 amazonS3) {
+        this.amazonS3 = amazonS3;
+    }
 
     public void uploadFile(MultipartFile multipartFile, String fileName) {
         File convertedFile = convertMultiPartToFile(multipartFile);
-        amazonS3.putObject(new PutObjectRequest("dropboxstorage", fileName, convertedFile));
+        amazonS3.putObject(new PutObjectRequest(bucketName, fileName, convertedFile));
         convertedFile.delete();
+    }
+
+    public byte[] downloadFile(String fileName) {
+        S3Object awsFile =  amazonS3.getObject(bucketName, fileName);
+        S3ObjectInputStream inputStream = awsFile.getObjectContent();
+        try {
+            return IOUtils.toByteArray(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean deleteFile(String fileName) {
+        amazonS3.deleteObject(bucketName, fileName);
+        return true;
     }
 
     private File convertMultiPartToFile(MultipartFile multipartFile) {
