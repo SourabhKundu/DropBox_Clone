@@ -25,10 +25,7 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import javax.mail.MessagingException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequestMapping("/")
@@ -161,13 +158,13 @@ public class HomeController {
         int userId = 1;
         int[] guestIds = userService.getIdsByEmail(emailsSelected);
         ownerGuestService.save(userId, fileId, guestIds, access);
-        for (String email : emailsSelected) {
-            SimpleMailMessage msg = new SimpleMailMessage();
-            msg.setTo(email);
-            msg.setSubject("Shared File Link");
-            msg.setText("click on link to download file : " + url);
-            javaMailSender.send(msg);
-        }
+        String[] emails = Arrays.copyOf(emailsSelected.toArray(), emailsSelected.size(),
+                String[].class);
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(emails);
+        msg.setSubject("Shared File Link");
+        msg.setText("click on link to download file : "+url);
+        javaMailSender.send(msg);
         emailsSelected.clear();
         return "redirect:/";
     }
