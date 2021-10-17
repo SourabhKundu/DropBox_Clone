@@ -30,6 +30,8 @@ public class FileService {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         File file = new File(fileName, multipartFile.getContentType());
         File savedFile = fileRepository.save(file);
+        String awsFileName = savedFile.getId() + "_" + fileName;
+        this.storageService.uploadFile(multipartFile, awsFileName);
     }
 
     public void update(int fileId, MultipartFile multipartFile) throws IOException {
