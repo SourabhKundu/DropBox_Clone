@@ -29,9 +29,7 @@ public class FileService {
     public void save(MultipartFile multipartFile) throws IOException {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         File file = new File(fileName, multipartFile.getContentType());
-        File file1 = fileRepository.save(file);
-        String awsFileName = file1.getId() + "_" + fileName;
-        this.storageService.uploadFile(multipartFile, awsFileName);
+        File savedFile = fileRepository.save(file);
     }
 
     public void update(int fileId, MultipartFile multipartFile) throws IOException {
@@ -59,7 +57,9 @@ public class FileService {
         return fileRepository.allFiles();
     }
 
-    public void delete(int fileId) {
+    public File delete(int fileId) throws FileNotFoundException {
+        File file = getFile(fileId);
         fileRepository.deleteById(fileId);
+        return file;
     }
 }

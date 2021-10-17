@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import javax.mail.MessagingException;
+import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashSet;
@@ -99,8 +100,8 @@ public class HomeController {
     }
 
     @GetMapping("/delete/file{fileId}")
-    public String deleteFile(@PathVariable int fileId) {
-        fileService.delete(fileId);
+    public String deleteFile(@PathVariable int fileId) throws FileNotFoundException {
+        File file = fileService.delete(fileId);
         return "redirect:/";
     }
 
