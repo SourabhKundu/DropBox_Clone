@@ -1,6 +1,7 @@
 package com.dropbox.main.model;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
@@ -28,13 +29,19 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable( name = "user_roles", joinColumns = @JoinColumn( name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn( name = "role_id", referencedColumnName = "id"))
+    private Collection<Role> roles;
+
     public User() {
     }
 
-    public User(String username, String email, String password) {
-        this.name = username;
+    public User(String name, String email, String password, Collection<Role> roles) {
+        this.name = name;
         this.email = email;
         this.password = password;
+        this.roles = roles;
     }
 
     public int getId() {
@@ -67,5 +74,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
     }
 }
