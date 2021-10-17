@@ -41,6 +41,11 @@
     </style>
 </head>
 <body>
+<div class="notification-btn">
+    <form th:action="@{/notification}">
+        <input th:type="submit" th:value="Notification"/>
+    </form>
+</div>
 <h2 align="center">Dropbox</h2>
 <div class="upload-main">
 <form th:action="@{/upload}" method="post" enctype="multipart/form-data">
