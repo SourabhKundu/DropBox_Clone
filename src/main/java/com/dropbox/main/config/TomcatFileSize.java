@@ -12,12 +12,7 @@ public class TomcatFileSize {
     @Bean
     public TomcatServletWebServerFactory containerFactory() {
         TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
-        factory.addConnectorCustomizers(new TomcatConnectorCustomizer() {
-            @Override
-            public void customize(Connector connector) {
-                ((AbstractHttp11Protocol<?>) connector.getProtocolHandler()).setMaxSwallowSize(-1);
-            }
-        });
+        factory.addConnectorCustomizers(connector -> ((AbstractHttp11Protocol<?>) connector.getProtocolHandler()).setMaxSwallowSize(999999999));
         return factory;
     }
 }
