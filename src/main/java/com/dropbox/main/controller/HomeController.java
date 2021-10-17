@@ -99,6 +99,16 @@ public class HomeController {
                 .body(new ByteArrayResource(fileData));
     }
 
+    @GetMapping("/view/file{fileId}")
+    public ResponseEntity<ByteArrayResource> viewFile(@PathVariable("fileId") int id) throws FileNotFoundException {
+        File file = fileService.getFile(id);
+        String fileName = file.getId() + "_" + file.getName();
+        byte[] fileData = storageService.downloadFile(fileName);
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType(file.getType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
+                .body(new ByteArrayResource(fileData));
+    }
+
     @GetMapping("/delete/file{fileId}")
     public String deleteFile(@PathVariable int fileId) throws FileNotFoundException {
         File file = fileService.delete(fileId);
