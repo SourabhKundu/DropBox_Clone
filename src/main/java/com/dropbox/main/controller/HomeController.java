@@ -3,6 +3,7 @@ package com.dropbox.main.controller;
 import com.dropbox.main.model.File;
 import com.dropbox.main.model.Notification;
 import com.dropbox.main.model.OwnerGuest;
+import com.dropbox.main.model.User;
 import com.dropbox.main.service.FileService;
 import com.dropbox.main.service.OwnerGuestService;
 import com.dropbox.main.service.StorageService;
@@ -155,7 +156,8 @@ public class HomeController {
 
     @PostMapping("/share")
     public String sendFile(@RequestParam("edit") boolean access) throws MessagingException, IOException {
-        int userId = 1;
+        User user = userService.getCurrentUser();
+        int userId = user.getId();
         int[] guestIds = userService.getIdsByEmail(emailsSelected);
         ownerGuestService.save(userId, fileId, guestIds, access);
         String[] emails = Arrays.copyOf(emailsSelected.toArray(), emailsSelected.size(),
@@ -171,7 +173,8 @@ public class HomeController {
 
     @GetMapping("/notification")
     public String notification(Model model){
-        int loginUserId = 1;
+        User user = userService.getCurrentUser();
+        int loginUserId = user.getId();
         List<OwnerGuest> list = ownerGuestService.findByGuestId(loginUserId);
         List<Notification> notificationList = ownerGuestService.getNotificationList(list);
         model.addAttribute("notificationList",notificationList);
@@ -181,7 +184,8 @@ public class HomeController {
 
     @GetMapping("/editNotification")
     public String editFile(@RequestParam int fileId,Model model){
-        int loginUserId = 1;
+        User user = userService.getCurrentUser();
+        int loginUserId = user.getId();
         List<OwnerGuest> list = ownerGuestService.findByGuestId(loginUserId);
         List<Notification> notificationList = ownerGuestService.getNotificationList(list);
         model.addAttribute("notificationList",notificationList);
