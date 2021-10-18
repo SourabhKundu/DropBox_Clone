@@ -34,4 +34,11 @@ public class BinController {
         return "bin";
     }
 
+    @GetMapping("/restore/file{fileId}")
+    public String restoreFile(@PathVariable("fileId") int fileId) throws FileNotFoundException {
+        File file = fileService.getFile(fileId);
+        file.setDeleted(false);
+        fileService.saveFile(file);
+        return "redirect:/";
+    }
 }
