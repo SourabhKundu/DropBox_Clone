@@ -27,4 +27,11 @@ public class BinController {
         this.userService = userService;
     }
 
+    @GetMapping("/bin")
+    public String getDeletedFiles(Model model) {
+        this.user = userService.getCurrentUser();
+        model.addAttribute("files", fileService.getDeletedFiles(this.user.getId()));
+        return "bin";
+    }
+
 }
