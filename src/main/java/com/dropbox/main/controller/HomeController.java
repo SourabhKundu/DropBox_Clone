@@ -183,13 +183,13 @@ public class HomeController {
     }
 
     @GetMapping("/editNotification")
-    public String editFile(@RequestParam int fileId, Model model) {
+    public String editFile(@RequestParam int id, Model model) {
         int loginUserId = this.user.getId();
         List<OwnerGuest> list = ownerGuestService.findByGuestId(loginUserId);
-        List<Notification> notificationList = ownerGuestService.getNotificationList(list);
+        List<Notification> notificationList = ownerGuestService.getNotificationList(loginUserId);
         model.addAttribute("notificationList", notificationList);
         model.addAttribute("edit", true);
-        model.addAttribute("fileId", fileId);
+        model.addAttribute("id", id);
         return "notification";
     }
 }
