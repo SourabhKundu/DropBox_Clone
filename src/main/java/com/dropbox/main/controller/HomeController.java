@@ -192,4 +192,13 @@ public class HomeController {
         model.addAttribute("id", id);
         return "notification";
     }
+
+    @GetMapping("/shared")
+    public String shared(Model model){
+        int loginUserId = this.user.getId();
+        List<OwnerGuest> list = ownerGuestService.findByUserId(loginUserId);
+        List<Share> shareList = ownerGuestService.getShareList(list);
+        model.addAttribute("shareList",shareList);
+        return "share";
+    }
 }
