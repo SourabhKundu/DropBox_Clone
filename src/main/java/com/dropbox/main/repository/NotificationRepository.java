@@ -11,4 +11,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Inte
     @Query(value = "select * from notification n where n.user_id = ?1",nativeQuery = true)
     public List<Notification> getNotificationByUserId(int userId);
 
+    @Query(value = "select * from notification n where n.file_id = ?1",nativeQuery = true)
+    public List<Notification> getNotificationByFileId(int fileId);
 }
