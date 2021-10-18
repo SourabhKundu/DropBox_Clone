@@ -57,6 +57,14 @@ public class OwnerGuestService {
         return ownerGuestRepository.getByGuestId(id);
     }
 
+    public List<OwnerGuest> findByUserId(int id) {
+        return ownerGuestRepository.getByUserId(id);
+    }
+
+    public List<Notification> getNotificationList(int userId) {
+        return notificationRepository.getNotificationByUserId(userId);
+    }
+
     public void updateNotification(int fileId){
         Optional<File> optionalFile = fileRepository.findById(fileId);
         File file = optionalFile.get();
