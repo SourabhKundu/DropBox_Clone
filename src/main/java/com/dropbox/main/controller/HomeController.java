@@ -1,9 +1,6 @@
 package com.dropbox.main.controller;
 
-import com.dropbox.main.model.File;
-import com.dropbox.main.model.Notification;
-import com.dropbox.main.model.OwnerGuest;
-import com.dropbox.main.model.User;
+import com.dropbox.main.model.*;
 import com.dropbox.main.service.FileService;
 import com.dropbox.main.service.OwnerGuestService;
 import com.dropbox.main.service.StorageService;
