@@ -36,10 +36,22 @@ public class HomeController {
     private final UserService userService;
     private final OwnerGuestService ownerGuestService;
     private final StorageService storageService;
+    JavaMailSender javaMailSender = getJavaMailSender();
     private int fileId;
     private String url;
     private Set<String> emailsSelected = new HashSet<>();
     private User user;
+
+    @Autowired
+    public HomeController(FileService fileService,
+                          UserService userService,
+                          StorageService storageService,
+                          OwnerGuestService ownerGuestService) {
+        this.ownerGuestService = ownerGuestService;
+        this.userService = userService;
+        this.fileService = fileService;
+        this.storageService = storageService;
+    }
 
     @Bean
     public JavaMailSender getJavaMailSender() {
@@ -57,19 +69,6 @@ public class HomeController {
         props.put("mail.debug", "true");
 
         return mailSender;
-    }
-
-    JavaMailSender javaMailSender = getJavaMailSender();
-
-    @Autowired
-    public HomeController(FileService fileService,
-                          UserService userService,
-                          StorageService storageService,
-                          OwnerGuestService ownerGuestService) {
-        this.ownerGuestService = ownerGuestService;
-        this.userService = userService;
-        this.fileService = fileService;
-        this.storageService = storageService;
     }
 
     @ModelAttribute
@@ -166,29 +165,29 @@ public class HomeController {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo(emails);
         msg.setSubject("Shared File Link");
-        msg.setText("click on link to download file : "+url);
+        msg.setText("click on link to download file : " + url);
         javaMailSender.send(msg);
         emailsSelected.clear();
         return "redirect:/";
     }
 
     @GetMapping("/notification")
-    public String notification(Model model){
+    public String notification(Model model) {
         int loginUserId = this.user.getId();
         List<OwnerGuest> list = ownerGuestService.findByGuestId(loginUserId);
         List<Notification> notificationList = ownerGuestService.getNotificationList(list);
-        model.addAttribute("notificationList",notificationList);
-        model.addAttribute("fileId",fileId);
+        model.addAttribute("notificationList", notificationList);
+        model.addAttribute("fileId", fileId);
         return "notification";
     }
 
     @GetMapping("/editNotification")
-    public String editFile(@RequestParam int fileId,Model model){
+    public String editFile(@RequestParam int fileId, Model model) {
         int loginUserId = this.user.getId();
         List<OwnerGuest> list = ownerGuestService.findByGuestId(loginUserId);
         List<Notification> notificationList = ownerGuestService.getNotificationList(list);
-        model.addAttribute("notificationList",notificationList);
-        model.addAttribute("edit",true);
+        model.addAttribute("notificationList", notificationList);
+        model.addAttribute("edit", true);
         model.addAttribute("fileId", fileId);
         return "notification";
     }

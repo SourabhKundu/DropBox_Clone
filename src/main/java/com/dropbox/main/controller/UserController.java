@@ -31,13 +31,13 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String userSignUp(@ModelAttribute("user")UserRegistrationDto userRegistrationDto){
+    public String userSignUp(@ModelAttribute("user") UserRegistrationDto userRegistrationDto) {
         userService.save(userRegistrationDto);
         return "redirect:/signup?success";
     }
 
     @GetMapping("/login")
-    public String login(){
+    public String login() {
         return "login";
     }
 }

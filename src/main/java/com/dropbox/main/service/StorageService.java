@@ -6,7 +6,6 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,10 +17,9 @@ import java.util.Objects;
 @Service
 public class StorageService {
 
-//    @Value("${application.bucket.name}")
-    private String bucketName = "dropboxstorage";
-
     private final AmazonS3 amazonS3;
+    //    @Value("${application.bucket.name}")
+    private String bucketName = "dropboxstorage";
 
     @Autowired
     public StorageService(AmazonS3 amazonS3) {
@@ -35,7 +33,7 @@ public class StorageService {
     }
 
     public byte[] downloadFile(String fileName) {
-        S3Object awsFile =  amazonS3.getObject(bucketName, fileName);
+        S3Object awsFile = amazonS3.getObject(bucketName, fileName);
         S3ObjectInputStream inputStream = awsFile.getObjectContent();
         try {
             return IOUtils.toByteArray(inputStream);
