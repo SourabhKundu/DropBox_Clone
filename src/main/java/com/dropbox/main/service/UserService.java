@@ -66,7 +66,6 @@ public class UserService implements UserDetailsService {
 
         if (principal instanceof UserDetails) {
             String username = ((UserDetails) principal).getUsername();
-            System.out.println("Current User Details: " + username);
             user = userRepository.findUserByEmail(username);
         }
         return user;

@@ -39,6 +39,7 @@ public class HomeController {
     private int fileId;
     private String url;
     private Set<String> emailsSelected = new HashSet<>();
+    private User user;
 
     @Bean
     public JavaMailSender getJavaMailSender() {
@@ -78,7 +79,8 @@ public class HomeController {
 
     @GetMapping("/")
     public String getHome(Model model) {
-        model.addAttribute("files", fileService.getFiles());
+        this.user = userService.getCurrentUser();
+        model.addAttribute("files", fileService.getFiles(this.user.getId()));
         return "home";
     }
 
@@ -156,8 +158,7 @@ public class HomeController {
 
     @PostMapping("/share")
     public String sendFile(@RequestParam("edit") boolean access) throws MessagingException, IOException {
-        User user = userService.getCurrentUser();
-        int userId = user.getId();
+        int userId = this.user.getId();
         int[] guestIds = userService.getIdsByEmail(emailsSelected);
         ownerGuestService.save(userId, fileId, guestIds, access);
         String[] emails = Arrays.copyOf(emailsSelected.toArray(), emailsSelected.size(),
@@ -173,8 +174,7 @@ public class HomeController {
 
     @GetMapping("/notification")
     public String notification(Model model){
-        User user = userService.getCurrentUser();
-        int loginUserId = user.getId();
+        int loginUserId = this.user.getId();
         List<OwnerGuest> list = ownerGuestService.findByGuestId(loginUserId);
         List<Notification> notificationList = ownerGuestService.getNotificationList(list);
         model.addAttribute("notificationList",notificationList);
@@ -184,8 +184,7 @@ public class HomeController {
 
     @GetMapping("/editNotification")
     public String editFile(@RequestParam int fileId,Model model){
-        User user = userService.getCurrentUser();
-        int loginUserId = user.getId();
+        int loginUserId = this.user.getId();
         List<OwnerGuest> list = ownerGuestService.findByGuestId(loginUserId);
         List<Notification> notificationList = ownerGuestService.getNotificationList(list);
         model.addAttribute("notificationList",notificationList);

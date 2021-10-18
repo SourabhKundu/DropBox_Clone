@@ -1,6 +1,7 @@
 package com.dropbox.main.service;
 
 import com.dropbox.main.model.File;
+import com.dropbox.main.model.User;
 import com.dropbox.main.repository.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,17 +19,21 @@ public class FileService {
 
     private final FileRepository fileRepository;
     private final StorageService storageService;
+    private final UserService userService;
 
     @Autowired
-    public FileService(FileRepository fileRepository, StorageService storageService) {
+    public FileService(FileRepository fileRepository, StorageService storageService, UserService userService) {
         this.fileRepository = fileRepository;
         this.storageService = storageService;
+        this.userService = userService;
 
     }
 
     public void save(MultipartFile multipartFile) throws IOException {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+        User user = userService.getCurrentUser();
         File file = new File(fileName, multipartFile.getContentType());
+        file.setUser(user);
         File savedFile = fileRepository.save(file);
         String awsFileName = savedFile.getId() + "_" + fileName;
         this.storageService.uploadFile(multipartFile, awsFileName);
@@ -57,8 +62,8 @@ public class FileService {
         }
     }
 
-    public List<File> getFiles() {
-        return fileRepository.allFiles();
+    public List<File> getFiles(int userId) {
+        return fileRepository.allFiles(userId);
     }
 
     public File delete(int fileId) throws FileNotFoundException {

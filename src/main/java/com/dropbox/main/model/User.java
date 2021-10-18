@@ -1,7 +1,9 @@
 package com.dropbox.main.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
@@ -28,6 +30,9 @@ public class User {
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.MERGE)
+    private List<File> files = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable( name = "user_roles", joinColumns = @JoinColumn( name = "user_id", referencedColumnName = "id"),
@@ -82,5 +87,13 @@ public class User {
 
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
+    }
+
+    public List<File> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<File> files) {
+        this.files = files;
     }
 }

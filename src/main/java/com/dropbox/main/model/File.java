@@ -1,5 +1,6 @@
 package com.dropbox.main.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -37,6 +38,11 @@ public class File {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Timestamp updatedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public File() {
     }
@@ -90,5 +96,13 @@ public class File {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Drop Box</title>
@@ -42,9 +43,12 @@
 </head>
 <body>
 <div class="notification-btn">
-    <form th:action="@{/notification}">
-        <input th:type="submit" th:value="Notification"/>
-    </form>
+    <a th:href="@{/notification}">
+        <button th:text="Notification"></button>
+    </a>
+</div>
+<div class="col"><span sec:authorize="isAuthenticated()"><a th:href="@{/logout}">
+    <input type="submit" name="logout" value="Logout"/></a></span>
 </div>
 <h2 align="center">Dropbox</h2>
 <div class="upload-main">
@@ -60,6 +64,7 @@
         <th th:text="ID"></th>
         <th th:text="Name"></th>
         <th th:text="Download"></th>
+        <th th:text="View"></th>
         <th th:text="Action"></th>
     </tr>
     <tr th:each="file : ${files}" class="files-table-row">
