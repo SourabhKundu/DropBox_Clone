@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+<title>Shared Files</title>
+</head>
+<body>
+<div class="notification-btn">
+    <a th:href="@{/}">
+        <button th:text="Home"></button>
+    </a>
+</div>
+<h2 align="center">Shared Files</h2>
+<br><br>
+<div class="download-main">
+    <table>
+        <tr>
+            <th th:text="Date"></th>
+            <th th:text="Name"></th>
+            <th th:text="ShareTo"></th>
+            <th th:text="Access"></th>
+        </tr>
+        <tr th:each="share : ${shareList}">
+            <td th:text="${share.date}"></td>
+            <td th:text="${share.filename}"></td>
+            <td th:text="${share.shareTo}"></td>
+            <td th:if="${share.access} == true " th:text="Edit"></td>
+            <td th:if="${share.access} == false" th:text="View"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
