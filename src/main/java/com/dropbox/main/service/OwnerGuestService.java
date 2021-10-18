@@ -29,7 +29,7 @@ public class OwnerGuestService {
         this.fileRepository = fileRepository;
         this.userRepository = userRepository;
         this.ownerGuestRepository = ownerGuestRepository;
-        this.notificationRepository = notificationRepository
+        this.notificationRepository = notificationRepository;
     }
 
     public void save(int userId, int fileId, int[] guestIds, boolean access) {

@@ -1,6 +1,9 @@
 package com.dropbox.main.model;
 
+import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "owner_guest")
@@ -30,6 +33,10 @@ public class OwnerGuest {
 
     @Column(name = "access")
     private boolean access;
+
+    @UpdateTimestamp
+    @Column(name = "date")
+    private Timestamp date;
 
     public OwnerGuest() {
     }
@@ -79,5 +86,13 @@ public class OwnerGuest {
 
     public void setAccess(boolean access) {
         this.access = access;
+    }
+
+    public Timestamp getDate() {
+        return date;
+    }
+
+    public void setDate(Timestamp date) {
+        this.date = date;
     }
 }
