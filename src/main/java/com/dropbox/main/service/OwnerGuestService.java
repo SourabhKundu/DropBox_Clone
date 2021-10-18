@@ -1,9 +1,6 @@
 package com.dropbox.main.service;
 
-import com.dropbox.main.model.File;
-import com.dropbox.main.model.Notification;
-import com.dropbox.main.model.OwnerGuest;
-import com.dropbox.main.model.User;
+import com.dropbox.main.model.*;
 import com.dropbox.main.repository.FileRepository;
 import com.dropbox.main.repository.NotificationRepository;
 import com.dropbox.main.repository.OwnerGuestRepository;
@@ -73,5 +70,18 @@ public class OwnerGuestService {
             notification.setFileName(file.getName());
             notificationRepository.save(notification);
         }
+    }
+
+    public List<Share> getShareList(List<OwnerGuest> list){
+        List<Share> shareList = new ArrayList<>();
+        for(OwnerGuest ownerGuest : list){
+            Optional<File> optionalFile = fileRepository.findById(ownerGuest.getFileId());
+            Optional<User> optionalUser = userRepository.findById(ownerGuest.getGuestId());
+            File file = optionalFile.get();
+            User user = optionalUser.get();
+            Share share = new Share(ownerGuest.getFileId(),file.getName(), user.getName(), ownerGuest.isAccess(), ownerGuest.getDate());
+            shareList.add(share);
+        }
+        return shareList;
     }
 }
