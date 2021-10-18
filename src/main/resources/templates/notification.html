@@ -52,6 +52,20 @@
             <td th:text="${notification.fileName}"></td>
             <td><a th:href="@{/download/file{id}(id = ${notification.fileId})}" th:text="Download"></a></td>
             <td><a th:href="@{/view/file{id}(id = ${notification.fileId})}" th:text="View"></a></td>
+            <td>
+                <form th:action="@{/editNotification}" th:if="${notification.access} and ${id} != ${notification.id}">
+                    <input th:type="hidden" th:name="id" th:value="${notification.id}">
+                    <input th:type="submit" th:value="Edit"/>
+                </form>
+                <div th:if="${edit} and ${id} == ${notification.id} ">
+                    <div>
+                        <form th:action="@{/update/file{id}(id = ${notification.fileId})}" method="post" enctype="multipart/form-data">
+                            <input type="file" class="myFile" name="file" multiple required >
+                            <button class="div-one" type="submit">replace file</button>
+                        </form>
+                    </div>
+                </div>
+            </td>
         </tr>
     </table>
 </div>
