@@ -29,6 +29,10 @@ public class FileService {
 
     }
 
+    public void saveFile(File file) {
+        fileRepository.save(file);
+    }
+
     public void save(MultipartFile multipartFile) throws IOException {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         User user = userService.getCurrentUser();
@@ -65,6 +69,10 @@ public class FileService {
 
     public List<File> getFiles(int userId) {
         return fileRepository.allFiles(userId);
+    }
+
+    public List<File> getDeletedFiles(int userId) {
+        return fileRepository.allDeletedFiles(userId);
     }
 
     public File delete(int fileId) throws FileNotFoundException {

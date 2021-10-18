@@ -21,24 +21,26 @@
        }
        table, td, th {
         border: 1px solid black;
-        }
-        table {
+       }
+       table {
         width: 100%;
         border-collapse: collapse;
-        }
-        input[type="file"]{
+       }
+       input[type="file"]{
         height:50px;
-        }
-
-        #action-div {
+       }
+       #action-div {
           display: flex;
           flex-direction: row;
-        }
-
-        .files-table-row {
+       }
+       .files-table-row {
             text-align: center;
-        }
+       }
 
+       .anchor {
+           color: black;
+           text-decoration: none;
+       }
     </style>
 </head>
 <body>
@@ -49,6 +51,11 @@
 </div>
 <div class="col"><span sec:authorize="isAuthenticated()"><a th:href="@{/logout}">
     <input type="submit" name="logout" value="Logout"/></a></span>
+</div>
+<div class="notification-btn">
+    <a class="anchor" th:href="@{/bin}">
+        <button th:text="Bin"></button>
+    </a>
 </div>
 <h2 align="center">Dropbox</h2>
 <div class="upload-main">
