@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Notification</title>
+<title>Notification</title>
 <style>
        .upload-main{
        width:30%;
@@ -41,7 +41,7 @@
 <div class="download-main">
     <table>
         <tr>
-            <th th:text="'Shared By'"></th>
+            <th th:text="sharedby"></th>
             <th th:text="Name"></th>
             <th th:text="Download"></th>
             <th th:text="View"></th>
@@ -53,16 +53,17 @@
             <td><a th:href="@{/download/file{id}(id = ${notification.fileId})}" th:text="Download"></a></td>
             <td><a th:href="@{/view/file{id}(id = ${notification.fileId})}" th:text="View"></a></td>
             <td>
-                <form th:action="@{/editNotification}"
-                      th:if="${notification.access} and ${notification.fileId} != ${fileId}">
-                    <input th:type="hidden" th:name="fileId" th:value="${notification.fileId}">
+                <form th:action="@{/editNotification}" th:if="${notification.access} and ${id} != ${notification.id}">
+                    <input th:type="hidden" th:name="id" th:value="${notification.id}">
                     <input th:type="submit" th:value="Edit"/>
                 </form>
-                <div th:if="${edit} and ${fileId} == ${notification.fileId}">
-                    <form th:action="@{/update/file{id}(id = ${notification.fileId})}" method="post" enctype="multipart/form-data">
-                        <input type="file" class="myFile" name="file" required >
-                        <button class="div-one" type="submit">replace file</button>
-                    </form>
+                <div th:if="${edit} and ${id} == ${notification.id} ">
+                    <div>
+                        <form th:action="@{/update/file{id}(id = ${notification.fileId})}" method="post" enctype="multipart/form-data">
+                            <input type="file" class="myFile" name="file" multiple required >
+                            <button class="div-one" type="submit">replace file</button>
+                        </form>
+                    </div>
                 </div>
             </td>
         </tr>

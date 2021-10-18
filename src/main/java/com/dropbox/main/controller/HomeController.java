@@ -1,9 +1,6 @@
 package com.dropbox.main.controller;
 
-import com.dropbox.main.model.File;
-import com.dropbox.main.model.Notification;
-import com.dropbox.main.model.OwnerGuest;
-import com.dropbox.main.model.User;
+import com.dropbox.main.model.*;
 import com.dropbox.main.service.FileService;
 import com.dropbox.main.service.OwnerGuestService;
 import com.dropbox.main.service.StorageService;
@@ -58,7 +55,6 @@ public class HomeController {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
-
         mailSender.setUsername("narasimha8186094547@gmail.com");
         mailSender.setPassword("fubwbpumstgwnxef");
 
@@ -127,6 +123,7 @@ public class HomeController {
     @PostMapping("/update/file{fileId}")
     public String updateFile(@PathVariable int fileId, @RequestParam("file") MultipartFile file) throws IOException {
         fileService.update(fileId, file);
+        ownerGuestService.updateNotification(fileId);
         return "redirect:/";
     }
 
@@ -176,20 +173,29 @@ public class HomeController {
     public String notification(Model model) {
         int loginUserId = this.user.getId();
         List<OwnerGuest> list = ownerGuestService.findByGuestId(loginUserId);
-        List<Notification> notificationList = ownerGuestService.getNotificationList(list);
+        List<Notification> notificationList = ownerGuestService.getNotificationList(loginUserId);
         model.addAttribute("notificationList", notificationList);
         model.addAttribute("fileId", fileId);
         return "notification";
     }
 
     @GetMapping("/editNotification")
-    public String editFile(@RequestParam int fileId, Model model) {
+    public String editFile(@RequestParam int id, Model model) {
         int loginUserId = this.user.getId();
         List<OwnerGuest> list = ownerGuestService.findByGuestId(loginUserId);
-        List<Notification> notificationList = ownerGuestService.getNotificationList(list);
+        List<Notification> notificationList = ownerGuestService.getNotificationList(loginUserId);
         model.addAttribute("notificationList", notificationList);
         model.addAttribute("edit", true);
-        model.addAttribute("fileId", fileId);
+        model.addAttribute("id", id);
         return "notification";
+    }
+
+    @GetMapping("/shared")
+    public String shared(Model model){
+        int loginUserId = this.user.getId();
+        List<OwnerGuest> list = ownerGuestService.findByUserId(loginUserId);
+        List<Share> shareList = ownerGuestService.getShareList(list);
+        model.addAttribute("shareList",shareList);
+        return "share";
     }
 }
