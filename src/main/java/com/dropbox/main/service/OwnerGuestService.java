@@ -44,7 +44,7 @@ public class OwnerGuestService {
             ownerGuest.setGuestId(guestId);
             ownerGuest.setFileId(fileId);
             ownerGuest.setAccess(access);
-            Notification notification = new Notification(fileId,guestId, file.getName(), user.getName(), access);
+            Notification notification = new Notification(fileId, guestId, file.getName(), user.getName(), access);
             notificationRepository.save(notification);
             ownerGuestRepository.save(ownerGuest);
         }
@@ -62,24 +62,24 @@ public class OwnerGuestService {
         return notificationRepository.getNotificationByUserId(userId);
     }
 
-    public void updateNotification(int fileId){
+    public void updateNotification(int fileId) {
         Optional<File> optionalFile = fileRepository.findById(fileId);
         File file = optionalFile.get();
         List<Notification> notifications = notificationRepository.getNotificationByFileId(fileId);
-        for(Notification notification : notifications){
+        for (Notification notification : notifications) {
             notification.setFileName(file.getName());
             notificationRepository.save(notification);
         }
     }
 
-    public List<Share> getShareList(List<OwnerGuest> list){
+    public List<Share> getShareList(List<OwnerGuest> list) {
         List<Share> shareList = new ArrayList<>();
-        for(OwnerGuest ownerGuest : list){
+        for (OwnerGuest ownerGuest : list) {
             Optional<File> optionalFile = fileRepository.findById(ownerGuest.getFileId());
             Optional<User> optionalUser = userRepository.findById(ownerGuest.getGuestId());
             File file = optionalFile.get();
             User user = optionalUser.get();
-            Share share = new Share(ownerGuest.getFileId(),file.getName(), user.getName(), ownerGuest.isAccess(), ownerGuest.getDate());
+            Share share = new Share(ownerGuest.getFileId(), file.getName(), user.getName(), ownerGuest.isAccess(), ownerGuest.getDate());
             shareList.add(share);
         }
         return shareList;

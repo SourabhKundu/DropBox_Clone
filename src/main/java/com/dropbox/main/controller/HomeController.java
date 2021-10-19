@@ -33,11 +33,11 @@ public class HomeController {
     private final UserService userService;
     private final OwnerGuestService ownerGuestService;
     private final StorageService storageService;
-    JavaMailSender javaMailSender = getJavaMailSender();
     private int fileId;
     private String url;
     private Set<String> emailsSelected = new HashSet<>();
     private User user;
+    JavaMailSender javaMailSender = getJavaMailSender();
 
     @Autowired
     public HomeController(FileService fileService,
@@ -191,11 +191,11 @@ public class HomeController {
     }
 
     @GetMapping("/shared")
-    public String shared(Model model){
+    public String shared(Model model) {
         int loginUserId = this.user.getId();
         List<OwnerGuest> list = ownerGuestService.findByUserId(loginUserId);
         List<Share> shareList = ownerGuestService.getShareList(list);
-        model.addAttribute("shareList",shareList);
+        model.addAttribute("shareList", shareList);
         return "share";
     }
 }

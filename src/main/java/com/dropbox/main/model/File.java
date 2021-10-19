@@ -21,7 +21,6 @@ public class File {
             sequenceName = "global_id_sequence",
             allocationSize = 1
     )
-
     @Column(name = "id")
     private int id;
 

@@ -25,8 +25,7 @@ public class FileService {
     public FileService(FileRepository fileRepository, StorageService storageService, UserService userService) {
         this.fileRepository = fileRepository;
         this.storageService = storageService;
-        this.userService = userService;
-
+        this.userService = userService;                                                                                                                                                                                                                                                         
     }
 
     public void saveFile(File file) {
@@ -35,7 +34,7 @@ public class FileService {
 
     public void save(MultipartFile multipartFile) throws IOException {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
-        User user = userService.getCurrentUser();
+        User user = userService.getCurrentUser();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
         File file = new File(fileName, multipartFile.getContentType());
         file.setUser(user);
         File savedFile = fileRepository.save(file);

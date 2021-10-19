@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface NotificationRepository extends JpaRepository<Notification, Integer> {
 
-    @Query(value = "select * from notification n where n.user_id = ?1",nativeQuery = true)
+    @Query(value = "select * from notification n where n.user_id = ?1", nativeQuery = true)
     public List<Notification> getNotificationByUserId(int userId);
 
-    @Query(value = "select * from notification n where n.file_id = ?1",nativeQuery = true)
+    @Query(value = "select * from notification n where n.file_id = ?1", nativeQuery = true)
     public List<Notification> getNotificationByFileId(int fileId);
 }

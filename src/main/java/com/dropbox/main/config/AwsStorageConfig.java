@@ -11,20 +11,15 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AwsStorageConfig {
 
-//    @Value("${cloud.aws.credentials.access-key}")
-//    private String accessKey;
-//
-//    @Value("${cloud.aws.credentials.secret-key}")
-//    private String accessSecret;
-//
-//    @Value("${cloud.aws.region.static}")
-//    private String region;
+    private final String ACCESS_KEY_ID = "AKIA4BIFJKA5AJUHLKVM";
+    private  final String ACCESS_KEY = "GxftXs+/ePVYbcbyXer5cP/Wumb9v01vZmbVRzPx";
+    private  final String REGION = "ap-south-1";
 
     @Bean
     public AmazonS3 generateS3Client() {
-        AWSCredentials credentials = new BasicAWSCredentials("AKIA4BIFJKA5AJUHLKVM", "GxftXs+/ePVYbcbyXer5cP/Wumb9v01vZmbVRzPx");
+        AWSCredentials credentials = new BasicAWSCredentials(ACCESS_KEY_ID, ACCESS_KEY);
         return AmazonS3ClientBuilder.standard()
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .withRegion("ap-south-1").build();
+                .withRegion(REGION).build();
     }
 }

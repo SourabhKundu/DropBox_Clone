@@ -18,12 +18,12 @@ import java.util.Objects;
 public class StorageService {
 
     private final AmazonS3 amazonS3;
-    //    @Value("${application.bucket.name}")
-    private String bucketName = "dropboxstorage";
+    private final String bucketName;
 
     @Autowired
     public StorageService(AmazonS3 amazonS3) {
         this.amazonS3 = amazonS3;
+        this.bucketName = "dropboxstorage";
     }
 
     public void uploadFile(MultipartFile multipartFile, String fileName) {
@@ -43,9 +43,8 @@ public class StorageService {
         return null;
     }
 
-    public boolean deleteFile(String fileName) {
+    public void deleteFile(String fileName) {
         amazonS3.deleteObject(bucketName, fileName);
-        return true;
     }
 
     private File convertMultiPartToFile(MultipartFile multipartFile) {

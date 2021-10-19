@@ -41,4 +41,9 @@ public class BinController {
         fileService.saveFile(file);
         return "redirect:/";
     }
+
+    @GetMapping("/bin/delete/file{fileId}")
+    public String delete(@PathVariable("fileId") int fileId) {
+
+    }
 }
