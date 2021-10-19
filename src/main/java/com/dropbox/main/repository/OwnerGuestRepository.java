@@ -11,8 +11,8 @@ import java.util.List;
 public interface OwnerGuestRepository extends JpaRepository<OwnerGuest, Integer> {
 
     @Query(value = "select * from owner_guest o where o.guest_id = ?1", nativeQuery = true)
-    public List<OwnerGuest> getByGuestId(int id);
+    List<OwnerGuest> getByGuestId(int id);
 
     @Query(value = "select * from owner_guest o where o.user_id = ?1", nativeQuery = true)
-    public List<OwnerGuest> getByUserId(int id);
+    List<OwnerGuest> getByUserId(int id);
 }

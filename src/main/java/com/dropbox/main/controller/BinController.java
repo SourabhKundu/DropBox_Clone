@@ -3,6 +3,7 @@ package com.dropbox.main.controller;
 import com.dropbox.main.model.File;
 import com.dropbox.main.model.User;
 import com.dropbox.main.service.FileService;
+import com.dropbox.main.service.StorageService;
 import com.dropbox.main.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,12 +20,14 @@ public class BinController {
 
     private final FileService fileService;
     private final UserService userService;
+    private final StorageService storageService;
     private User user;
 
     @Autowired
-    public BinController(FileService fileService, UserService userService) {
+    public BinController(FileService fileService, UserService userService, StorageService storageService) {
         this.fileService = fileService;
         this.userService = userService;
+        this.storageService = storageService;
     }
 
     @GetMapping("/bin")
@@ -40,5 +43,12 @@ public class BinController {
         file.setDeleted(false);
         fileService.saveFile(file);
         return "redirect:/";
+    }
+
+    @GetMapping("/bin/delete/file{fileId}")
+    public String delete(@PathVariable("fileId") int fileId) throws FileNotFoundException {
+         File file = fileService.delete(fileId);
+         storageService.deleteFile(file.getId() + "_" + file.getName());
+         return "redirect:/bin";
     }
 }

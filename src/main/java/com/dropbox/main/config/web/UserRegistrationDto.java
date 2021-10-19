@@ -14,7 +14,6 @@ public class UserRegistrationDto {
     }
 
     public UserRegistrationDto() {
-
     }
 
     public String getName() {

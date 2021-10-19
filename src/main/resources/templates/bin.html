@@ -57,6 +57,9 @@
                     <a th:href="@{/restore/file{id}(id = ${file.id})}">
                         <button th:text="Restore"></button>
                     </a>
+                    <a th:href="@{/bin/delete/file{id}(id = ${file.id})}">
+                        <button th:text="' Delete'"></button>
+                    </a>
                 </div>
             </td>
         </tr>

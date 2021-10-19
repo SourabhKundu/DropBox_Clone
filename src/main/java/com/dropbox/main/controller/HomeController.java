@@ -191,12 +191,12 @@ public class HomeController {
     }
 
     @GetMapping("/shared")
-    public String shared(Model model){
+    public String shared(Model model) {
         int loginUserId = this.user.getId();
         List<OwnerGuest> ownerGuestList = ownerGuestService.findByUserId(loginUserId);
-        if(ownerGuestList.size()>0){
+        if (ownerGuestList.size() > 0) {
             List<Share> shareList = ownerGuestService.getShareList(ownerGuestList);
-            model.addAttribute("shareList",shareList);
+            model.addAttribute("shareList", shareList);
         }
         return "share";
     }

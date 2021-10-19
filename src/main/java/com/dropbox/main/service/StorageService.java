@@ -18,8 +18,7 @@ import java.util.Objects;
 public class StorageService {
 
     private final AmazonS3 amazonS3;
-    //    @Value("${application.bucket.name}")
-    private String bucketName = "dropboxstorage";
+    private final String BUCKET_NAME = "dropboxstorage";
 
     @Autowired
     public StorageService(AmazonS3 amazonS3) {
@@ -28,12 +27,12 @@ public class StorageService {
 
     public void uploadFile(MultipartFile multipartFile, String fileName) {
         File convertedFile = convertMultiPartToFile(multipartFile);
-        amazonS3.putObject(new PutObjectRequest(bucketName, fileName, convertedFile));
+        amazonS3.putObject(new PutObjectRequest(BUCKET_NAME, fileName, convertedFile));
         convertedFile.delete();
     }
 
     public byte[] downloadFile(String fileName) {
-        S3Object awsFile = amazonS3.getObject(bucketName, fileName);
+        S3Object awsFile = amazonS3.getObject(BUCKET_NAME, fileName);
         S3ObjectInputStream inputStream = awsFile.getObjectContent();
         try {
             return IOUtils.toByteArray(inputStream);
@@ -44,7 +43,7 @@ public class StorageService {
     }
 
     public boolean deleteFile(String fileName) {
-        amazonS3.deleteObject(bucketName, fileName);
+        amazonS3.deleteObject(BUCKET_NAME, fileName);
         return true;
     }
 

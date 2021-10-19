@@ -44,23 +44,25 @@
     </style>
 </head>
 <body>
-<div class="notification-btn">
-    <a th:href="@{/notification}">
-        <button th:text="Notification"></button>
-    </a>
-</div>
-<div class="col"><span sec:authorize="isAuthenticated()"><a th:href="@{/logout}">
-    <input type="submit" name="logout" value="Logout"/></a></span>
-</div>
-<div class="notification-btn">
-    <a class="anchor" th:href="@{/shared}">
-        <button th:text="Shared"></button>
-    </a>
-</div>
-<div class="notification-btn">
-    <a class="anchor" th:href="@{/bin}">
-        <button th:text="Bin"></button>
-    </a>
+<div id="button-main">
+    <div class="notification-btn">
+        <a th:href="@{/notification}">
+            <button th:text="Notification"></button>
+        </a>
+    </div>
+    <div class="col"><span sec:authorize="isAuthenticated()"><a th:href="@{/logout}">
+        <input type="submit" name="logout" value="'   Logout   '"/></a></span>
+    </div>
+    <div class="notification-btn">
+        <a class="anchor" th:href="@{/shared}">
+            <button th:text="Shared"></button>
+        </a>
+    </div>
+    <div class="notification-btn">
+        <a class="anchor" th:href="@{/bin}">
+            <button th:text="Bin"></button>
+        </a>
+    </div>
 </div>
 <h2 align="center">Dropbox</h2>
 <div class="upload-main">
@@ -73,14 +75,12 @@
 <div class="download-main">
 <table>
     <tr class="files-table-row">
-        <th th:text="ID"></th>
         <th th:text="Name"></th>
         <th th:text="Download"></th>
         <th th:text="View"></th>
         <th th:text="Action"></th>
     </tr>
     <tr th:each="file : ${files}" class="files-table-row">
-        <td th:text="${file.id}"></td>
         <td th:text="${file.name}"></td>
         <td><a th:href="@{/download/file{id}(id = ${file.id})}" th:text="Download"></a></td>
         <td><a th:href="@{/view/file{id}(id = ${file.id})}" th:text="View"></a></td>

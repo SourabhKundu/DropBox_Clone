@@ -11,8 +11,8 @@ import java.util.Set;
 public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query(value = "select u.id from users u where u.email in (?1)", nativeQuery = true)
-    public int[] findIdByEmail(Set<String> emails);
+    int[] findIdByEmail(Set<String> emails);
 
-    @Query(value = "SELECT u FROM User u WHERE u.email=?1")
-    public User findUserByEmail(String email);
+    @Query(value = "SELECT * FROM users u WHERE u.email like ?1", nativeQuery = true)
+    User findUserByEmail(String email);
 }
