@@ -12,9 +12,13 @@ import java.util.List;
 @Repository
 public interface FileRepository extends JpaRepository<File, Integer> {
     @Transactional
-    @Query(value = "select * from files f where f.user_id = ?1 and f.is_deleted = false order by f.id",
+    @Query(value = "select * from files f where f.user_id = ?1 and f.is_deleted = false and f.folder_id is null order by f.id",
             nativeQuery = true)
     List<File> allFiles(@Param("userid") int userId);
+
+    @Query(value = "select * from files f where f.user_id = ?1 and f.is_deleted = false and f.folder_id = ?2 order by f.id",
+            nativeQuery = true)
+    List<File> findAllFilesByFolder(@Param("userid") int userId, @Param("folderId") int folderId);
 
     @Query(value = "select * from files f where f.user_id = ?1 and f.is_deleted = true order by f.id",
             nativeQuery = true)

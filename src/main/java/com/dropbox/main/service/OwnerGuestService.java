@@ -44,6 +44,7 @@ public class OwnerGuestService {
             ownerGuest.setGuestId(guestId);
             ownerGuest.setFileId(fileId);
             ownerGuest.setAccess(access);
+            System.out.println(user.getName());
             Notification notification = new Notification(fileId, guestId, file.getName(), user.getName(), access);
             notificationRepository.save(notification);
             ownerGuestRepository.save(ownerGuest);

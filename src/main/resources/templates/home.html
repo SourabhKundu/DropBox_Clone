@@ -4,106 +4,146 @@
 <head>
     <meta charset="UTF-8">
     <title>Drop Box</title>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
     <style>
+        #main-div {
+            display: flex;
+            flex-direction: row;
+        }
        .upload-main{
        width:30%;
        margin:auto;
        height:30%;
        }
-       .download-main{
-       width:60%;
-       margin:auto;
-       height:30%;
-       border: 1px solid black;
-       }
-       .div-one{
-       height:20px;
-       }
-       table, td, th {
-        border: 1px solid black;
+       #button-main {
+           padding-left: 20px;
+           padding-right: 30px;
        }
        table {
-        width: 100%;
         border-collapse: collapse;
+        border: inset;
+        width: 60%;
+        margin-left: 10%;
        }
-       input[type="file"]{
-        height:50px;
+       .files-table-row {
+           text-align: center;
        }
        #action-div {
           display: flex;
           flex-direction: row;
+          margin-left: 30%;
        }
-       .files-table-row {
-            text-align: center;
-       }
-
        .anchor {
-           color: black;
            text-decoration: none;
        }
     </style>
 </head>
 <body>
-<div id="button-main">
+<div>
+    <h2 align="center">Dropbox</h2>
     <div class="notification-btn">
-        <a th:href="@{/notification}">
-            <button th:text="Notification"></button>
-        </a>
-    </div>
-    <div class="col"><span sec:authorize="isAuthenticated()"><a th:href="@{/logout}">
-        <input type="submit" name="logout" value="'   Logout   '"/></a></span>
-    </div>
-    <div class="notification-btn">
-        <a class="anchor" th:href="@{/shared}">
-            <button th:text="Shared"></button>
-        </a>
-    </div>
-    <div class="notification-btn">
-        <a class="anchor" th:href="@{/bin}">
-            <button th:text="Bin"></button>
-        </a>
+        <span sec:authorize="isAuthenticated()">
+            <a th:href="@{/logout}">
+                <p th:text="'   Logout   '"></p>
+            </a>
+        </span>
     </div>
 </div>
-<h2 align="center">Dropbox</h2>
 <div class="upload-main">
-<form th:action="@{/upload}" method="post" enctype="multipart/form-data">
-    <input type="file" id="myFile" name="file" multiple required >
-    <button class="div-one" type="submit">Upload file</button>
-</form>
+    <form th:action="@{/upload}" method="post" enctype="multipart/form-data">
+        <input type="file" id="myFile" name="file" multiple required >
+        <input style="cursor:pointer" type="submit" th:value="'Upload file'"/>
+    </form>
+    <form th:action="@{/}" th:if="${!createFolder}">
+        <input th:type="hidden" th:name="createFolder" th:value="true">
+        <input id="upload-anchor" th:type="submit" th:value="Create">
+    </form>
 </div>
-<br><br>
-<div class="download-main">
-<table>
-    <tr class="files-table-row">
-        <th th:text="Name"></th>
-        <th th:text="Download"></th>
-        <th th:text="View"></th>
-        <th th:text="Action"></th>
-    </tr>
-    <tr th:each="file : ${files}" class="files-table-row">
-        <td th:text="${file.name}"></td>
-        <td><a th:href="@{/download/file{id}(id = ${file.id})}" th:text="Download"></a></td>
-        <td><a th:href="@{/view/file{id}(id = ${file.id})}" th:text="View"></a></td>
-        <td>
-            <div id="action-div">
-                <form th:action="@{/edit}" th:if="${fileId} != ${file.id}">
-                    <input th:type="hidden" th:name="fileId" th:value="${file.id}">
-                    <input th:type="submit" th:value="Edit"/>
-                </form>
-                <form th:if="${edit} and ${fileId} == ${file.id}" th:action="@{/update/file{id}(id = ${file.id})}" method="post" enctype="multipart/form-data">
-                    <input type="file" class="myFile" name="file" multiple required >
-                    <button class="div-one" type="submit">replace file</button>
-                </form>
-                <form th:action="@{/delete/file{id}(id = ${file.id})}">
-                    <input th:type="submit" th:value="Delete"/>
-                </form>
-                <form th:action="@{/share/file{id}(id = ${file.id})}">
-                    <input th:type="submit" th:value="Share"/>
-                </form>
-            </div>
-        </td>
-    </tr>
-</table>
+<div id="main-div">
+    <div id="button-main">
+        <div class="notification-btn">
+            <a class="anchor" th:href="@{/notification}">
+                <p th:text="Notifications"></p>
+            </a>
+        </div>
+        <div class="notification-btn">
+            <a class="anchor" th:href="@{/shared}">
+                <p th:text="Shared"></p>
+            </a>
+        </div>
+        <div class="notification-btn">
+            <a class="anchor" th:href="@{/bin}">
+                <p th:text="Bin"></p>
+            </a>
+        </div>
+    </div>
+    <br>
+    <div th:if="${createFolder}">
+        <form th:object="${folder}" th:action="@{folder}" th:method="post">
+            <table>
+                <tr>
+                    <td style="text-align: left"><p th:text="'Folder Name'"></p></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input th:type="text" th:field="${folder.name}" th:size="22">
+                    </td>
+
+                </tr>
+                <tr>
+                    <td><input th:type="submit" th:value="Create"></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <table th:if="${!createFolder}">
+        <tr class="files-table-row">
+            <th th:text="'   '"></th>
+            <th th:text="Name"></th>
+            <th th:text="Download"></th>
+            <th th:text="View"></th>
+            <th th:text="Action"></th>
+        </tr>
+        <tr th:each="userFolder : ${folders}" class="files-table-row">
+            <td>
+                <i style="font-size:24px" class="fas fa-folder"></i>
+            </td>
+            <td>
+                <a th:href="@{/folder/{name}(name = ${userFolder.name})}"><p th:text="${userFolder.name}"></p></a>
+            </td>
+        </tr>
+        <tr th:each="file : ${files}" class="files-table-row">
+            <td>
+                <i style="font-size:24px" class="fas fa-file"></i>
+            </td>
+            <td>
+                <p th:text="${file.name}"></p>
+            </td>
+            <td><a th:href="@{/download/file{id}(id = ${file.id})}" th:text="Download"></a></td>
+            <td><a th:href="@{/view/file{id}(id = ${file.id})}" th:text="View"></a></td>
+            <td>
+                <div id="action-main">
+                    <div id="action-div">
+                        <form th:action="@{/edit}" th:if="${fileId} != ${file.id}">
+                            <input th:type="hidden" th:name="fileId" th:value="${file.id}">
+                            <input th:type="submit" th:value="Edit"/>
+                        </form>
+                        <form th:if="${edit} and ${fileId} == ${file.id}" th:action="@{/update/file{id}(id = ${file.id})}" method="post" enctype="multipart/form-data">
+                            <input type="file" class="myFile" name="file" multiple required >
+                            <button class="div-one" type="submit">replace file</button>
+                        </form>
+                        <form th:action="@{/delete/file{id}(id = ${file.id})}">
+                            <input th:type="submit" th:value="Delete"/>
+                        </form>
+                        <form th:action="@{/share/file{id}(id = ${file.id})}">
+                            <input th:type="submit" th:value="Share"/>
+                        </form>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div></div>
 </div>
 </body>
 </html>

@@ -46,6 +46,11 @@ public class File {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JsonIgnore
+    @JoinColumn(name = "folder_id", columnDefinition = "int default -1")
+    private Folder folder;
+
     public File() {
     }
 
@@ -114,5 +119,13 @@ public class File {
 
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
+    }
+
+    public Folder getFolder() {
+        return folder;
+    }
+
+    public void setFolder(Folder folder) {
+        this.folder = folder;
     }
 }

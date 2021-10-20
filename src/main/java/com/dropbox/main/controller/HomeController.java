@@ -1,10 +1,7 @@
 package com.dropbox.main.controller;
 
 import com.dropbox.main.model.*;
-import com.dropbox.main.service.FileService;
-import com.dropbox.main.service.OwnerGuestService;
-import com.dropbox.main.service.StorageService;
-import com.dropbox.main.service.UserService;
+import com.dropbox.main.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ByteArrayResource;
@@ -33,6 +30,7 @@ public class HomeController {
     private final UserService userService;
     private final OwnerGuestService ownerGuestService;
     private final StorageService storageService;
+    private final FolderService folderService;
     JavaMailSender javaMailSender = getJavaMailSender();
     private int fileId;
     private String url;
@@ -43,11 +41,13 @@ public class HomeController {
     public HomeController(FileService fileService,
                           UserService userService,
                           StorageService storageService,
+                          FolderService folderService,
                           OwnerGuestService ownerGuestService) {
         this.ownerGuestService = ownerGuestService;
         this.userService = userService;
         this.fileService = fileService;
         this.storageService = storageService;
+        this.folderService = folderService;
     }
 
     @Bean
@@ -70,12 +70,47 @@ public class HomeController {
     @ModelAttribute
     public void addModelAttributes(Model model) {
         model.addAttribute("edit", "false");
+        model.addAttribute("createFolder", "false");
     }
 
     @GetMapping("/")
     public String getHome(Model model) {
         this.user = userService.getCurrentUser();
+        if(this.user == null) {
+            return "redirect:/login";
+        }
         model.addAttribute("files", fileService.getFiles(this.user.getId()));
+        model.addAttribute("folders", folderService.getFoldersByUserId(this.user.getId()));
+        model.addAttribute("createFolder", "false");
+        return "home";
+    }
+
+    @PostMapping("/folder")
+    public String createFolder(@ModelAttribute("folder") Folder folder) {
+        folder.setUser(this.user);
+        folderService.save(folder);
+        return "redirect:/";
+    }
+
+    @GetMapping("/folder/{folderName}")
+    public String getFolder(@PathVariable("folderName") String folderName, Model model) {
+        Folder folder = folderService.getFolder(folderName);
+        model.addAttribute("folderName", folderName);
+        model.addAttribute("files", fileService.getFilesByFolderId(this.user.getId(), folder.getId()));
+        return "folder";
+    }
+
+    @PostMapping("/folder/{folderName}")
+    public String uploadFileInFolder(@PathVariable("folderName") String folderName,
+                                     @RequestParam("file") MultipartFile file) {
+        folderService.saveFileInFolder(file, folderName);
+        return "redirect:/folder/"+folderName;
+    }
+
+    @GetMapping(value = "/", params = {"createFolder"})
+    public String createFolder(@RequestParam("createFolder") boolean createFolder, Model model) {
+        model.addAttribute("createFolder", createFolder);
+        model.addAttribute("folder", new Folder());
         return "home";
     }
 

@@ -42,6 +42,17 @@ public class FileService {
         this.storageService.uploadFile(multipartFile, awsFileName);
     }
 
+    public void saveFileInFolder(MultipartFile multipartFile, Folder folder) {
+        String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+        User user = userService.getCurrentUser();
+        File file = new File(fileName, multipartFile.getContentType());
+        file.setUser(user);
+        file.setFolder(folder);
+        File savedFile = fileRepository.save(file);
+        String awsFileName = savedFile.getId() + "_" + fileName;
+        this.storageService.uploadFile(multipartFile, awsFileName);
+    }
+
     public void update(int fileId, MultipartFile multipartFile) throws IOException {
         Optional<File> optionalFile = fileRepository.findById(fileId);
         if (optionalFile.isPresent()) {
@@ -66,8 +77,22 @@ public class FileService {
         }
     }
 
+    public List<File> getFilesByFolderId(int userId, int folderId) {
+        List<File> files = fileRepository.findAllFilesByFolder(userId, folderId);
+        if(!files.isEmpty()) {
+            return files;
+        } else {
+            return null;
+        }
+    }
+
     public List<File> getFiles(int userId) {
-        return fileRepository.allFiles(userId);
+        List<File> files = fileRepository.allFiles(userId);
+        if(!files.isEmpty()) {
+            return files;
+        } else {
+            return null;
+        }
     }
 
     public List<File> getDeletedFiles(int userId) {
