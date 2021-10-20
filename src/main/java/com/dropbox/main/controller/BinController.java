@@ -66,4 +66,11 @@ public class BinController {
         return "redirect:/";
     }
 
+    @GetMapping("/bin/delete/{folderName}")
+    public String removeFolder(@PathVariable("folderName") String folderName) {
+        Folder folder = folderService.getFolder(folderName);
+        fileService.deleteAll(folder.getFiles());
+        folderService.deleteFolder(folder);
+        return "redirect:/bin";
+    }
 }
