@@ -58,5 +58,12 @@ public class BinController {
         return "redirect:/";
     }
 
+    @GetMapping("/restore/{folderName}")
+    public String restoreFolder(@PathVariable("folderName") String folderName) {
+        Folder folder = folderService.getFolder(folderName);
+        folder.setDeleted(false);
+        folderService.save(folder);
+        return "redirect:/";
+    }
 
 }
