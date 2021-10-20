@@ -20,12 +20,16 @@ public class OwnerGuestService {
     private final FileRepository fileRepository;
     private final UserRepository userRepository;
     private final NotificationRepository notificationRepository;
+    private final UserService userService;
+    private User user;
 
     @Autowired
     public OwnerGuestService(OwnerGuestRepository ownerGuestRepository,
                              FileRepository fileRepository,
                              UserRepository userRepository,
-                             NotificationRepository notificationRepository) {
+                             NotificationRepository notificationRepository,
+                             UserService userService) {
+        this.userService = userService;
         this.fileRepository = fileRepository;
         this.userRepository = userRepository;
         this.ownerGuestRepository = ownerGuestRepository;
@@ -33,12 +37,10 @@ public class OwnerGuestService {
     }
 
     public void save(int userId, int fileId, int[] guestIds, boolean access) {
-
+        this.user=userService.getCurrentUser();
         for (int guestId : guestIds) {
             Optional<File> optionalFile = fileRepository.findById(fileId);
-            Optional<User> optionalUser = userRepository.findById(guestId);
             File file = optionalFile.get();
-            User user = optionalUser.get();
             OwnerGuest ownerGuest = new OwnerGuest();
             ownerGuest.setUserId(userId);
             ownerGuest.setGuestId(guestId);

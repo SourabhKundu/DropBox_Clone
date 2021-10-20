@@ -51,7 +51,7 @@ public class File {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JsonIgnore
-    @JoinColumn(name = "folder_id", columnDefinition = "int default -1 on delete cascade")
+    @JoinColumn(name = "folder_id", columnDefinition = "int default -1")
     private Folder folder;
 
     public File() {
