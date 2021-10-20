@@ -45,7 +45,6 @@ public class CommentController {
         model.addAttribute("file", file);
         model.addAttribute("comments", comments);
         model.addAttribute("userEmail", this.user.getEmail());
-        System.out.println("updated two");
         return "comment";
     }
 
@@ -68,7 +67,6 @@ public class CommentController {
         comment.setName(this.user.getName());
         comment.setFileId(fileId);
         commentRepository.save(comment);
-        System.out.println("succes");
         return homeController.notification(model);
     }
 
@@ -89,7 +87,6 @@ public class CommentController {
         Comment existingComment = commentRepository.findById(commentId).get();
         existingComment.setComment(commentMessage);
         commentRepository.save(existingComment);
-        System.out.println("updated");
         return showComment(fileId,model);
     }
 
