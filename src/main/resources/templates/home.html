@@ -126,9 +126,7 @@
             </td>
             <td>
             </td>
-            <td>
-                <p th:text="${file.name}"></p>
-            </td>
+            <td> <a th:href="@{/showComment/file{id}(id = ${file.id})}" th:text="${file.name}"></a></td>
             <td><a class="anchor" th:href="@{/download/file{id}(id = ${file.id})}" th:text="Download"></a></td>
             <td><a class="anchor" th:href="@{/view/file{id}(id = ${file.id})}" th:text="View"></a></td>
             <td>
