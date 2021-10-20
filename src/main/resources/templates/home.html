@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Drop Box</title>
-    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin='anonymous'></script>
     <style>
         #main-div {
+            font-family:;
             display: flex;
             flex-direction: row;
         }
@@ -111,7 +112,7 @@
         </tr>
         <tr th:each="file : ${files}" class="files-table-row">
             <td>
-                <i style="font-size:24px;color: #0e4de1" class="fas fa-file"></i>
+                <i style="font-size:24px;color: #0e4de1" th:class="'fa fa-file'"></i>
             </td>
             <td>
                 <p th:text="${file.name}"></p>
@@ -146,7 +147,7 @@
     <table th:each="userFolder : ${folders}">
         <tr class="files-table-row">
             <td>
-                <i style="font-size: 50px;color: #10c3c9" class="fas fa-folder"></i>
+                <i style="font-size: 50px;color: #10c3c9" th:class="'fa fa-folder'"></i>
                 <a class="anchor" th:href="@{/folder/{name}(name = ${userFolder.name})}"><p th:text="${userFolder.name}"></p></a>
             </td>
         </tr>
