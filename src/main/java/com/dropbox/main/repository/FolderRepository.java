@@ -14,5 +14,6 @@ public interface FolderRepository extends JpaRepository<Folder, Integer> {
     @Query(value = "select * from folders where user_id = ?1", nativeQuery = true)
     List<Folder> findAllByUserId(@Param("id") int id);
 
-
+    @Query(value = "select * from folders where folders.name like ?1", nativeQuery = true)
+    Folder findFolder(@Param("name") String name);
 }
