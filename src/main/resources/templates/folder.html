@@ -90,23 +90,15 @@
         </tr>
         <tr th:each="file : ${files}" class="files-table-row">
             <td>
-                <i style="font-size:24px" class="fas fa-file"></i>
+                <i style="font-size:24px;color: #0e4de1" class="fas fa-file"></i>
             </td>
             <td>
                 <p th:text="${file.name}"></p>
             </td>
-            <td><a th:href="@{/download/file{id}(id = ${file.id})}" th:text="Download"></a></td>
-            <td><a th:href="@{/view/file{id}(id = ${file.id})}" th:text="View"></a></td>
+            <td><a class="anchor" th:href="@{/download/file{id}(id = ${file.id})}" th:text="Download"></a></td>
+            <td><a class="anchor" th:href="@{/view/file{id}(id = ${file.id})}" th:text="View"></a></td>
             <td>
                 <div id="action-div">
-                    <form th:action="@{/edit}" th:if="${fileId} != ${file.id}">
-                        <input th:type="hidden" th:name="fileId" th:value="${file.id}">
-                        <input th:type="submit" th:value="Edit"/>
-                    </form>
-                    <form th:if="${edit} and ${fileId} == ${file.id}" th:action="@{/update/file{id}(id = ${file.id})}" method="post" enctype="multipart/form-data">
-                        <input type="file" class="myFile" name="file" multiple required >
-                        <button class="div-one" type="submit">replace file</button>
-                    </form>
                     <form th:action="@{/delete/file{id}(id = ${file.id})}">
                         <input th:type="submit" th:value="Delete"/>
                     </form>
