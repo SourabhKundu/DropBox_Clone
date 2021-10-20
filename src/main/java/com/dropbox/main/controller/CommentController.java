@@ -71,4 +71,34 @@ public class CommentController {
         System.out.println("succes");
         return homeController.notification(model);
     }
+
+    @GetMapping("/comment/edit/{commentId}")
+    public String editComment(@PathVariable("commentId") int commentId,
+                              @RequestParam("fileId") int fileId,
+                              Model model) throws FileNotFoundException {
+        Comment comment = commentRepository.getById(commentId);
+        model.addAttribute("editComment", comment);
+        return showComment(fileId,model);
+    }
+    @PostMapping("/comment/update/{commentId}")
+    public String updateComment(@PathVariable("commentId") int commentId,
+                                @RequestParam("fileId") int fileId,
+                                @RequestParam("comment") String commentMessage,
+                                Model model) throws FileNotFoundException {
+
+        Comment existingComment = commentRepository.findById(commentId).get();
+        existingComment.setComment(commentMessage);
+        commentRepository.save(existingComment);
+        System.out.println("updated");
+        return showComment(fileId,model);
+    }
+
+    @PostMapping("/comment/delete/{commentId}")
+    public String deleteComment(@PathVariable("commentId") int commentId,
+                                @RequestParam("fileId") int fileId,
+                                Model model) throws FileNotFoundException {
+        commentRepository.deleteById(commentId);
+        return showComment(fileId,model);
+    }
+
 }
