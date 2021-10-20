@@ -1,6 +1,7 @@
 package com.dropbox.main.service;
 
 import com.dropbox.main.model.File;
+import com.dropbox.main.model.Folder;
 import com.dropbox.main.model.User;
 import com.dropbox.main.repository.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
