@@ -30,8 +30,10 @@
             padding: 12px 20px;
             cursor: pointer;
         }
-
-
+        .required:after {
+            content: " *";
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -40,11 +42,11 @@
     <h1 style="text-align: center;">Login</h1>
     <div id="content" style="padding: 20px;">
         <form th:action="@{/login}" method="post">
-            <label>Email</label>
-            <input type="email" id="email" name="username" placeholder="Enter email">
+            <label class="required">Email</label>
+            <input type="email" id="email" name="username" placeholder="Enter email" required>
 
-            <label>Password</label>
-            <input type="password" id="fpassword" name="password" placeholder="Enter password">
+            <label class="required">Password</label>
+            <input type="password" id="fpassword" name="password" placeholder="Enter password" required>
 
             <div class="submit" style="text-align: center;">
                 <input type="submit" name="login" value="Login">
@@ -53,6 +55,5 @@
         <p>Doesn't have an account?<a href="/" th:href="@{/signup}">Sign Up here</a></p>
     </div>
 </div>
-
 </body>
 </html>

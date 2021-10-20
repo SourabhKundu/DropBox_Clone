@@ -61,6 +61,11 @@
         <input style="cursor:pointer" type="submit" th:value="'Upload file'"/>
     </form>
 </div>
+<div id="delete-folder">
+    <a th:href="@{/delete/{name}(name = ${folderName})}">
+        <p th:text="Delete"></p>
+    </a>
+</div>
 <div id="main-div">
     <div id="button-main">
         <div class="notification-btn">
@@ -80,12 +85,11 @@
         </div>
         <div class="notification-btn">
             <a class="anchor" th:href="@{/bin}">
-                <p th:text="Bin"></p>
+                <p th:text="'Deleted Files'"></p>
             </a>
         </div>
     </div>
     <br>
-
     <table th:if="${!createFolder}">
         <tr class="files-table-row">
             <th th:text="'   '"></th>

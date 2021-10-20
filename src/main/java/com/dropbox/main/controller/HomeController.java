@@ -148,6 +148,14 @@ public class HomeController {
         return "redirect:/";
     }
 
+    @GetMapping("/delete/{folderName}")
+    public String deleteFolder(@PathVariable("folderName") String folderName) {
+        Folder folder = folderService.getFolder(folderName);
+        folder.setDeleted(true);
+        folderService.save(folder);
+        return "redirect:/";
+    }
+
     @GetMapping("/edit")
     public String editPage(@RequestParam int fileId, Model model) {
         model.addAttribute("edit", "true");

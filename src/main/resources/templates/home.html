@@ -40,7 +40,8 @@
            text-decoration: none;
        }
        #folder-div {
-           margin-left: 30%;
+           margin-left: 15%;
+           margin-right: 15%;
            display: grid;
            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
        }
@@ -64,8 +65,8 @@
         </span>
     </div>
 </div>
-<div class="upload-main">
-    <form th:action="@{/}" th:if="${!createFolder}">
+<div class="upload-main" th:if="${!createFolder}">
+    <form th:action="@{/}">
         <input th:type="hidden" th:name="createFolder" th:value="true">
         <input id="upload-anchor" th:type="submit" th:value="Folder">
     </form>
@@ -94,14 +95,14 @@
     </div>
     <br>
     <div id="create-folder-div" th:if="${createFolder}">
-        <form th:object="${folder}" th:action="@{folder}" th:method="post">
+        <form th:object="${folder}" th:action="@{/folder}" th:method="post">
             <table>
                 <tr>
                     <td style="text-align: left"><p th:text="'Folder Name'"></p></td>
                 </tr>
                 <tr>
                     <td>
-                        <input th:type="text" th:field="${folder.name}" th:size="22">
+                        <input th:type="text" th:field="${folder.name}" th:size="22" required>
                     </td>
                 </tr>
                 <tr>
@@ -113,6 +114,7 @@
     <table th:if="${!createFolder}" id="files-table">
         <tr class="files-table-row">
             <th th:text="'   '"></th>
+            <th th:text="'   '"></th>
             <th th:text="Name"></th>
             <th th:text="Download"></th>
             <th th:text="View"></th>
@@ -121,6 +123,8 @@
         <tr th:each="file : ${files}" class="files-table-row">
             <td>
                 <i style="font-size:24px;color: #0e4de1" th:class="'fa fa-file'"></i>
+            </td>
+            <td>
             </td>
             <td>
                 <p th:text="${file.name}"></p>

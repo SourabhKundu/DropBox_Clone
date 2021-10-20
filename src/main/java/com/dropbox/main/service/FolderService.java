@@ -38,6 +38,19 @@ public class FolderService {
         fileService.saveFileInFolder(file, folder);
     }
 
+    public List<Folder> getAllDeletedFolders(int userId) {
+        List<Folder> folders = folderRepository.findAllDeletedFolders(userId);
+        if (!folders.isEmpty()) {
+            return folders;
+        } else {
+            return null;
+        }
+    }
+
+    public void deleteFolder(Folder folder) {
+        folderRepository.delete(folder);
+    }
+
     public Folder getFolder(String folderName) {
         return folderRepository.findFolder(folderName);
     }

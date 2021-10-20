@@ -105,4 +105,8 @@ public class FileService {
         fileRepository.deleteById(fileId);
         return file;
     }
+
+    public void deleteAll(List<File> files) {
+        fileRepository.deleteAll(files);
+    }
 }

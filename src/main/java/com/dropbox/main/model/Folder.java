@@ -27,11 +27,15 @@ public class Folder {
     private Timestamp updatedAt;
 
     @OneToMany(mappedBy = "folder", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    public List<File> files;
+    @Column(columnDefinition = "on delete cascade")
+    private List<File> files;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     public User user;
+
+    @Column(name = "is_deleted", columnDefinition = "boolean default false")
+    private boolean isDeleted;
 
     public Folder() {
     }
@@ -86,5 +90,13 @@ public class Folder {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }

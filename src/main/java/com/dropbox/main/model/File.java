@@ -41,6 +41,9 @@ public class File {
     @Column(name = "is_deleted", columnDefinition = "boolean default false")
     private boolean isDeleted;
 
+    @Column(name = "is_starred", columnDefinition = "boolean default false")
+    private boolean isStarred;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "user_id")
@@ -48,7 +51,7 @@ public class File {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JsonIgnore
-    @JoinColumn(name = "folder_id", columnDefinition = "int default -1")
+    @JoinColumn(name = "folder_id", columnDefinition = "int default -1 on delete cascade")
     private Folder folder;
 
     public File() {
@@ -127,5 +130,13 @@ public class File {
 
     public void setFolder(Folder folder) {
         this.folder = folder;
+    }
+
+    public boolean isStarred() {
+        return isStarred;
+    }
+
+    public void setStarred(boolean starred) {
+        isStarred = starred;
     }
 }
