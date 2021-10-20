@@ -4,20 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Drop Box</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous"></head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+          integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <style>
         #main-div {
             display: flex;
             flex-direction: row;
         }
        .upload-main{
-       width:30%;
-       margin:auto;
-       height:30%;
+           width:30%;
+           margin:auto;
+           height:30%;
+           display: flex;
+           flex-basis: auto;
        }
        #button-main {
            padding-left: 20px;
@@ -45,6 +44,13 @@
            display: grid;
            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
        }
+       #file-upload-form {
+           display: flex;
+           flex-basis: auto;
+       }
+       #create-folder-div {
+           margin-left: 30%;
+       }
     </style>
 </head>
 <body>
@@ -59,13 +65,13 @@
     </div>
 </div>
 <div class="upload-main">
-    <form th:action="@{/upload}" method="post" enctype="multipart/form-data">
-        <input type="file" id="myFile" name="file" multiple required >
-        <input style="cursor:pointer" type="submit" th:value="'Upload file'"/>
-    </form>
     <form th:action="@{/}" th:if="${!createFolder}">
         <input th:type="hidden" th:name="createFolder" th:value="true">
-        <input id="upload-anchor" th:type="submit" th:value="Create">
+        <input id="upload-anchor" th:type="submit" th:value="Folder">
+    </form>
+    <form id="file-upload-form" th:action="@{/upload}" method="post" enctype="multipart/form-data">
+        <input type="file" id="myFile" name="file" multiple required >
+        <input style="cursor:pointer" type="submit" th:value="'Upload file'"/>
     </form>
 </div>
 <div id="main-div">
@@ -87,7 +93,7 @@
         </div>
     </div>
     <br>
-    <div th:if="${createFolder}">
+    <div id="create-folder-div" th:if="${createFolder}">
         <form th:object="${folder}" th:action="@{folder}" th:method="post">
             <table>
                 <tr>
@@ -97,7 +103,6 @@
                     <td>
                         <input th:type="text" th:field="${folder.name}" th:size="22">
                     </td>
-
                 </tr>
                 <tr>
                     <td><input th:type="submit" th:value="Create"></td>

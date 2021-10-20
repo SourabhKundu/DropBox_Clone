@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Drop Box</title>
-    <script src= "https://kit.fontawesome.com/a076d05399.js" crossorigin='anonymous'></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+          integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <style>
     #main-div {
       display: flex;
@@ -36,6 +37,10 @@
     .anchor {
       text-decoration: none;
     }
+    #file-upload-form {
+        display: flex;
+        flex-basis: auto;
+    }
   </style>
 </head>
 <body>
@@ -50,7 +55,8 @@
     </div>
 </div>
 <div class="upload-main">
-    <form th:action="@{/folder/{name}(name = ${folderName})}" method="post" enctype="multipart/form-data">
+    <form id="file-upload-form" th:action="@{/folder/{name}(name = ${folderName})}"
+          method="post" enctype="multipart/form-data">
         <input type="file" id="myFile" name="file" multiple required >
         <input style="cursor:pointer" type="submit" th:value="'Upload file'"/>
     </form>
