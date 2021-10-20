@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Drop Box | Properties</title>
+    <style>
+        .container-one{
+            width : 60%;
+            margin :auto;
+            border-style: solid;
+        }
+        .container-two{
+            width : 60%;
+            margin :auto;
+        }
+        p{
+            display: inline;
+        }
+        .info{
+            width : 40%;
+            margin : auto;
+        }
+        .comment-box{
+            margin : auto;
+            border: 1px solid black;
+            width : 40%;
+            padding : 10px;
+        }
+        strong{
+            font-size: 1.200em;
+        }
+        .comment-span{
+            float:right;
+        }
+    </style>
+</head>
+<body>
+<div id="main">
+    <div class="container-one">
+        <div class="info">
+            File name : <p  th:text="${file.name}"></p><br>
+            File Type : <p  th:text="${file.type}"></p><br>
+            Uploaded at : <p  th:text="${file.createdAt}"></p><br>
+        </div>
+    </div><br>
+    <div class="container-two">
+        <div class="comment-box" th:each="comment:${comments}">
+            <div class="commend-head">
+                <strong>[[${comment.name}]]</strong> <span class="comment-span">[[${comment.createdAt}]]</span>
+                <br>
+                <p>[[${comment.comment}]]</p>
+            </div>
+            <div th:if=" ${userEmail} == ${comment.email}">
+                <form th:action="@{'/comment/edit/'+${comment.id}}" method="get">
+                    <input type="hidden" name="fileId" th:value="${file.id}"/>
+                    <input type="submit" value="Edit" class="btn btn-outline-info"/>
+                </form>
+                <form th:action="@{'/comment/delete/'+${comment.id}}" method="post">
+                    <input type="hidden" name="fileId" th:value="${file.id}"/>
+                    <input type="submit" value="Delete" class="btn btn-outline-danger"/>
+                </form>
+            </div>
+            <div th:if="${editComment}!=null and ${editComment.id}==${comment.id}"
+                 class="col-md-10 mx-3 my-3 border border-dark">
+                <form th:action="@{'/comment/update/'+${comment.id}}" method="post">
+                    <input type="hidden" name="fileId" th:value="${file.id}"/> <br/>
+                    <input type="text" name="comment" th:value="${comment.comment}" placeholder="add your Comment..."/>
+                    <br>
+                    <input type="submit" value="Update Comment" class="btn btn-outline-primary"/>
+                </form>
+            </div>
+        </div>
+        <br><br>
+    </div><br>
+</div>
+</body>
+</html>
