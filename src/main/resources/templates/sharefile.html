@@ -2,16 +2,30 @@
 <html lang="en" xmlns:th="http://thymeleaf.org/%22%3E%22%3E">
 <head>
     <meta charset="UTF-8">
-<title>Down Load File</title>
+    <title>Share File</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <style>
+    body {
+        margin-top: 10%;
+        background-color: #d2eded;
+    }
     #main-div {
         text-align: center;
-        background-color: #e3efef;
+        background-color: #ceced3;
+        margin-left: 30%;
+        margin-right: 30%;
+        padding-top: 6%;
+        padding-bottom: 10%;
+        border-radius: 20px;
+    }
+    .anchor {
+        text-decoration: none;
     }
 </style>
 </head>
 <body>
-<div id="main-div">
+<div id="main-div" class="border border-dark">
     <form th:action="@{/share}" th:method="post">
         <p th:text="'Share file link to your connections...!'"></p>
         <div th:each="email : ${emailsSelected}" th:if="${emailsSelected} != null">

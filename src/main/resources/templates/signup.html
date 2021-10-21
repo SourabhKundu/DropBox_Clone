@@ -2,19 +2,19 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-<title>SignUp</title>
-
+    <title>SignUp</title>
     <style>
         body {
             margin-top: 50px;
             display: flex;
             justify-content: center;
+            background-color: #efece9;
         }
-
         .container {
             width: 30%;
-            border: rgb(32, 32, 32);
-            border-style: solid;
+            border: solid rgb(32, 32, 32);
+            border-radius: 20px;
+            background-color: white;
         }
 
         input[type=email],input[type=password],input[type=text] {
@@ -37,9 +37,7 @@
 
 </head>
 <body>
-
 <div class="container">
-
     <div  style="align:center;" th:if="${param.success}">
         <div>Signed Up!</div>
     </div>
@@ -60,12 +58,9 @@
             <div class="submit" style="text-align: center;">
                 <input type="submit" value="Submit">
             </div>
-
         </form>
-
         <p>Have an account? <a href="/" th:href="@{/login}">Login here</a></p>
     </div>
 </div>
-
 </body>
 </html>
