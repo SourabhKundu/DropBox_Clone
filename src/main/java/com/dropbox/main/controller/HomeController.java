@@ -18,9 +18,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import javax.mail.MessagingException;
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+import static org.springframework.http.MediaType.*;
 
 @Controller
 @RequestMapping("/")
@@ -125,7 +130,7 @@ public class HomeController {
         File file = fileService.getFile(id);
         String fileName = file.getId() + "_" + file.getName();
         byte[] fileData = storageService.downloadFile(fileName);
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType(file.getType()))
+        return ResponseEntity.ok().contentType(parseMediaType(file.getType()))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
                 .body(new ByteArrayResource(fileData));
     }
@@ -135,7 +140,7 @@ public class HomeController {
         File file = fileService.getFile(id);
         String fileName = file.getId() + "_" + file.getName();
         byte[] fileData = storageService.downloadFile(fileName);
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType(file.getType()))
+        return ResponseEntity.ok().contentType(parseMediaType(file.getType()))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
                 .body(new ByteArrayResource(fileData));
     }
@@ -201,6 +206,7 @@ public class HomeController {
         model.addAttribute("guestUsers", userService.getAllUsers());
         return "sharefile";
     }
+
 
     @PostMapping(value = "/share", params = {"add"})
     public String addEmail(@RequestParam("email") String email, Model model) {
