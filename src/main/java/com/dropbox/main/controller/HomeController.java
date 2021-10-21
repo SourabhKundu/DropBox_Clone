@@ -156,6 +156,28 @@ public class HomeController {
         return "redirect:/";
     }
 
+    @GetMapping("/addstar/file{fileId}")
+    public String addStar(@PathVariable("fileId") int fileId) throws FileNotFoundException {
+        File file = fileService.getFile(fileId);
+        file.setStarred(true);
+        fileService.saveFile(file);
+        return "redirect:/";
+    }
+
+    @GetMapping("/removestar/file{fileId}")
+    public String removeStar(@PathVariable("fileId") int fileId) throws FileNotFoundException {
+        File file = fileService.getFile(fileId);
+        file.setStarred(false);
+        fileService.saveFile(file);
+        return "redirect:/";
+    }
+
+    @GetMapping("/starred")
+    public String getStarredFiles(Model model) {
+        model.addAttribute("files", fileService.getAllStarredFiles(this.user.getId()));
+        return "starred";
+    }
+
     @GetMapping("/edit")
     public String editPage(@RequestParam int fileId, Model model) {
         model.addAttribute("edit", "true");

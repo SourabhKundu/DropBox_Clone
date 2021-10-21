@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+          integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <style>
+        #files-table {
+            border-collapse: collapse;
+            border: inset;
+            width: 60%;
+            margin-left: 10%;
+        }
+        .files-table-row {
+            text-align: center;
+        }
+        #action-div {
+            display: flex;
+            flex-direction: row;
+            margin-left: 30%;
+        }
+        .anchor {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<table id="files-table">
+    <tr class="files-table-row">
+        <th th:text="'   '"></th>
+        <th th:text="Name"></th>
+        <th th:text="Download"></th>
+        <th th:text="View"></th>
+        <th th:text="Action"></th>
+    </tr>
+    <tr th:each="file : ${files}" class="files-table-row">
+        <td>
+            <i style="font-size:25px;color: #0e4de1" th:class="'fa fa-file'"></i>
+        </td>
+        <td>
+            <a class="anchor" th:href="@{/addstar/file{id}(id = ${file.id})}" th:if="${!file.isStarred}">
+                <i style="font-size:14px;color: #e9d74d" class="far fa-star"></i>
+            </a>
+            <a class="anchor" th:href="@{/removestar/file{id}(id = ${file.id})}" th:if="${file.isStarred}">
+                <i style="font-size:14px;color: #e9d74d" class="fa fa-star"></i>
+            </a>
+            <a class="anchor" th:href="@{/showComment/file{id}(id = ${file.id})}" th:text="${file.name}"></a>
+        </td>
+        <td><a class="anchor" th:href="@{/download/file{id}(id = ${file.id})}" th:text="Download"></a></td>
+        <td><a class="anchor" th:href="@{/view/file{id}(id = ${file.id})}" th:text="View"></a></td>
+        <td>
+            <div id="action-main">
+                <div id="action-div">
+                    <form th:action="@{/delete/file{id}(id = ${file.id})}">
+                        <input th:type="submit" th:value="Delete"/>
+                    </form>
+                    <form th:action="@{/share/file{id}(id = ${file.id})}">
+                        <input th:type="submit" th:value="Share"/>
+                    </form>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

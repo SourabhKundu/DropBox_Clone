@@ -24,5 +24,9 @@ public interface FileRepository extends JpaRepository<File, Integer> {
             nativeQuery = true)
     List<File> allDeletedFiles(@Param("userid") int userId);
 
+    @Query(value = "select * from files f where f.user_id = ?1 and f.is_starred = true order by f.id",
+            nativeQuery = true)
+    List<File> allStarredFiles(@Param("userid") int userId);
+
     File save(File file);
 }

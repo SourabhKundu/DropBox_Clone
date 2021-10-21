@@ -100,6 +100,10 @@ public class FileService {
         return fileRepository.allDeletedFiles(userId);
     }
 
+    public List<File> getAllStarredFiles(int userId) {
+        return fileRepository.allStarredFiles(userId);
+    }
+
     public File delete(int fileId) throws FileNotFoundException {
         File file = getFile(fileId);
         fileRepository.deleteById(fileId);
