@@ -130,7 +130,7 @@ public class HomeController {
         File file = fileService.getFile(id);
         String fileName = file.getId() + "_" + file.getName();
         byte[] fileData = storageService.downloadFile(fileName);
-        return ResponseEntity.ok().contentType(parseMediaType(file.getType()))
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType(file.getType()))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
                 .body(new ByteArrayResource(fileData));
     }
@@ -140,7 +140,7 @@ public class HomeController {
         File file = fileService.getFile(id);
         String fileName = file.getId() + "_" + file.getName();
         byte[] fileData = storageService.downloadFile(fileName);
-        return ResponseEntity.ok().contentType(parseMediaType(file.getType()))
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType(file.getType()))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
                 .body(new ByteArrayResource(fileData));
     }
