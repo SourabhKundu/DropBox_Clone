@@ -95,7 +95,6 @@
     <br>
     <table th:if="${!createFolder}">
         <tr class="files-table-row">
-            <th th:text="'   '"></th>
             <th th:text="Name"></th>
             <th th:text="Download"></th>
             <th th:text="View"></th>
@@ -103,10 +102,19 @@
         </tr>
         <tr th:each="file : ${files}" class="files-table-row">
             <td>
-                <i style="font-size:24px;color: #0e4de1" class="fa fa-file"></i>
-            </td>
-            <td>
-                <p th:text="${file.name}"></p>
+                <div id="first-column">
+                    <i style="font-size:25px;color: #90adf1f7" th:class="'fa fa-file'"></i>
+                    <a class="text-decoration-none" th:href="@{/addstar/file{id}(id = ${file.id})}"
+                       th:if="${!file.isStarred}">
+                        <i style="font-size:14px;color: #e9d74d" class="far fa-star"></i>
+                    </a>
+                    <a class="text-decoration-none" th:href="@{/removestar/file{id}(id = ${file.id})}"
+                       th:if="${file.isStarred}">
+                        <i style="font-size:14px;color: #e9d74d" class="fa fa-star"></i>
+                    </a>
+                    <a class="text-decoration-none" scope="row" th:href="@{/showComment/file{id}(id = ${file.id})}"
+                       th:text="${file.name}"></a>
+                </div>
             </td>
             <td><a class="anchor" th:href="@{/download/file{id}(id = ${file.id})}" th:text="Download"></a></td>
             <td><a class="anchor" th:href="@{/view/file{id}(id = ${file.id})}" th:text="View"></a></td>
