@@ -63,7 +63,10 @@
 </div>
 <div id="delete-folder">
     <a th:href="@{/delete/{name}(name = ${folderName})}">
-        <p th:text="Delete"></p>
+        <p th:text="'Delete Folder'"></p>
+    </a>
+    <a th:href="@{/download/{name}(name = ${folderName})}+'.zip'">
+        <p th:text="'Download Folder'"></p>
     </a>
 </div>
 <div id="main-div">

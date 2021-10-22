@@ -80,10 +80,12 @@ public class OwnerGuestService {
         for (OwnerGuest ownerGuest : list) {
             Optional<File> optionalFile = fileRepository.findById(ownerGuest.getFileId());
             Optional<User> optionalUser = userRepository.findById(ownerGuest.getGuestId());
-            File file = optionalFile.get();
-            User user = optionalUser.get();
-            Share share = new Share(ownerGuest.getFileId(), file.getName(), user.getName(), ownerGuest.isAccess(), ownerGuest.getDate());
-            shareList.add(share);
+            if(optionalFile.isPresent() && optionalUser.isPresent()) {
+                File file = optionalFile.get();
+                User user = optionalUser.get();
+                Share share = new Share(ownerGuest.getFileId(), file.getName(), user.getName(), ownerGuest.isAccess(), ownerGuest.getDate());
+                shareList.add(share);
+            }
         }
         return shareList;
     }

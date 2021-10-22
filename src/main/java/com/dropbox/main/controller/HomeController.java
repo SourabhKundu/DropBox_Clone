@@ -18,9 +18,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import javax.mail.MessagingException;
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+import static org.springframework.http.MediaType.*;
 
 @Controller
 @RequestMapping("/")
@@ -130,6 +135,25 @@ public class HomeController {
                 .body(new ByteArrayResource(fileData));
     }
 
+    @GetMapping("/download/{folderName}.zip")
+    public ResponseEntity<ByteArrayResource> downloadFolder(@PathVariable("folderName") String folderName) throws IOException {
+        Folder folder = folderService.getFolder(folderName);
+        List<File> filesInFolder = folder.getFiles();
+        ByteArrayOutputStream bo = new ByteArrayOutputStream();
+        ZipOutputStream zipOutputStream = new ZipOutputStream(bo);
+        for (File file: filesInFolder) {
+            String fileName = file.getId() + "_" + file.getName();
+            ZipEntry zipEntry = new ZipEntry(file.getName());
+            zipOutputStream.putNextEntry(zipEntry);
+            zipOutputStream.write(storageService.downloadFile(fileName));
+            zipOutputStream.closeEntry();
+        }
+        zipOutputStream.close();
+        return ResponseEntity.ok().contentType(MediaType.valueOf("application/zip"))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + folderName +".zip"+"\"")
+                .body(new ByteArrayResource(bo.toByteArray()));
+    }
+
     @GetMapping("/view/file{fileId}")
     public ResponseEntity<ByteArrayResource> viewFile(@PathVariable("fileId") int id) throws FileNotFoundException {
         File file = fileService.getFile(id);
@@ -202,6 +226,7 @@ public class HomeController {
         return "sharefile";
     }
 
+
     @PostMapping(value = "/share", params = {"add"})
     public String addEmail(@RequestParam("email") String email, Model model) {
         emailsSelected.add(email);
@@ -264,5 +289,10 @@ public class HomeController {
             model.addAttribute("shareList", shareList);
         }
         return "share";
+    }
+
+    @GetMapping("/main")
+    public String returnMain(Model model) {
+        return "main";
     }
 }
