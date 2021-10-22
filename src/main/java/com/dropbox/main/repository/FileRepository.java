@@ -28,5 +28,8 @@ public interface FileRepository extends JpaRepository<File, Integer> {
             nativeQuery = true)
     List<File> allStarredFiles(@Param("userid") int userId);
 
+    @Query(value = "select * from files f where f.user_id = ?1 and lower(f.name) like %?2%",nativeQuery = true)
+    List<File> getFilesByKeyword(@Param("userid") int userId, @Param("keyword") String keyword);
+
     File save(File file);
 }

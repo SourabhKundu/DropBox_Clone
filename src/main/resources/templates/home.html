@@ -39,7 +39,6 @@
            #deleteButton{
                margin-right : 5px;
            }
-
     </style>
 </head>
 <body>
@@ -48,16 +47,15 @@
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Dropbox_logo_2017.svg/2560px-Dropbox_logo_2017.svg.png"
              alt="DropBox" height="30px" width="145px">
     </a>
-    <form class="form-inline">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
+    <form class="form-inline" th:action="@{/search/?name={name}}" method="Get">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" name="search" aria-label="Search">
+        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
     </form>
     <span sec:authorize="isAuthenticated()">
             <a class="text-decoration-none" th:href="@{/logout}">
                 <button class="btn btn-outline-secondary my-2 my-sm-0">Logout</button>
                 </a>
         </span>
-
 </nav>
 <div class="jumbotron jumbotron-fluid" id="jumbo">
     <div class="container">

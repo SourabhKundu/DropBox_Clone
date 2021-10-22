@@ -51,23 +51,23 @@ public class CommentController {
     @GetMapping("/comment/file{fileId}")
     public String commentPage(@PathVariable("fileId") int fileId, Model model) throws FileNotFoundException {
         File file = fileService.getFile(fileId);
-        model.addAttribute("fileId",fileId);
-        model.addAttribute("comment",true);
-        return showComment(fileId,model);
+        model.addAttribute("fileId", fileId);
+        model.addAttribute("comment", true);
+        return showComment(fileId, model);
     }
 
     @PostMapping("/saveComment")
     public String saveComment(@RequestParam("fileId") int fileId,
                               @RequestParam("comment") String commentText,
                               Model model) throws FileNotFoundException {
-        this.user=userService.getCurrentUser();
+        this.user = userService.getCurrentUser();
         Comment comment = new Comment();
         comment.setComment(commentText);
         comment.setEmail(this.user.getEmail());
         comment.setName(this.user.getName());
         comment.setFileId(fileId);
         commentRepository.save(comment);
-        return showComment(fileId,model);
+        return showComment(fileId, model);
     }
 
     @GetMapping("/comment/edit/{commentId}")
@@ -76,8 +76,9 @@ public class CommentController {
                               Model model) throws FileNotFoundException {
         Comment comment = commentRepository.getById(commentId);
         model.addAttribute("editComment", comment);
-        return showComment(fileId,model);
+        return showComment(fileId, model);
     }
+
     @PostMapping("/comment/update/{commentId}")
     public String updateComment(@PathVariable("commentId") int commentId,
                                 @RequestParam("fileId") int fileId,
@@ -87,7 +88,7 @@ public class CommentController {
         Comment existingComment = commentRepository.findById(commentId).get();
         existingComment.setComment(commentMessage);
         commentRepository.save(existingComment);
-        return showComment(fileId,model);
+        return showComment(fileId, model);
     }
 
     @PostMapping("/comment/delete/{commentId}")
@@ -95,7 +96,6 @@ public class CommentController {
                                 @RequestParam("fileId") int fileId,
                                 Model model) throws FileNotFoundException {
         commentRepository.deleteById(commentId);
-        return showComment(fileId,model);
+        return showComment(fileId, model);
     }
-
 }

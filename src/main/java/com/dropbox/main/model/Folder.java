@@ -10,6 +10,9 @@ import java.util.List;
 @Entity
 @Table(name = "folders")
 public class Folder {
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "user_id")
+    public User user;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -29,10 +32,6 @@ public class Folder {
     @OneToMany(mappedBy = "folder", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @Column(columnDefinition = "on delete cascade")
     private List<File> files;
-
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "user_id")
-    public User user;
 
     @Column(name = "is_deleted", columnDefinition = "boolean default false")
     private boolean isDeleted;

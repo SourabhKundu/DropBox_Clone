@@ -10,11 +10,14 @@ import java.util.List;
 @Service
 public class CommentService {
 
+    private final CommentRepository commentRepository;
+
     @Autowired
-    CommentRepository commentRepository;
+    public CommentService(CommentRepository commentRepository) {
+        this.commentRepository = commentRepository;
+    }
 
     public List<Comment> getCommentsByFileId(int fileId){
         return commentRepository.findCommentByFileId(fileId);
     }
-
 }

@@ -1,6 +1,7 @@
 package com.dropbox.main.controller;
 
 import com.dropbox.main.model.*;
+import com.dropbox.main.repository.FileRepository;
 import com.dropbox.main.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,8 +26,6 @@ import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import static org.springframework.http.MediaType.*;
-
 @Controller
 @RequestMapping("/")
 public class HomeController {
@@ -36,6 +35,7 @@ public class HomeController {
     private final OwnerGuestService ownerGuestService;
     private final StorageService storageService;
     private final FolderService folderService;
+    private final FileRepository fileRepository;
     JavaMailSender javaMailSender = getJavaMailSender();
     private int fileId;
     private String url;
@@ -47,7 +47,9 @@ public class HomeController {
                           UserService userService,
                           StorageService storageService,
                           FolderService folderService,
-                          OwnerGuestService ownerGuestService) {
+                          OwnerGuestService ownerGuestService,
+                          FileRepository fileRepository) {
+        this.fileRepository = fileRepository;
         this.ownerGuestService = ownerGuestService;
         this.userService = userService;
         this.fileService = fileService;
@@ -81,7 +83,7 @@ public class HomeController {
     @GetMapping("/")
     public String getHome(Model model) {
         this.user = userService.getCurrentUser();
-        if(this.user == null) {
+        if (this.user == null) {
             return "redirect:/login";
         }
         model.addAttribute("files", fileService.getFiles(this.user.getId()));
@@ -109,7 +111,7 @@ public class HomeController {
     public String uploadFileInFolder(@PathVariable("folderName") String folderName,
                                      @RequestParam("file") MultipartFile file) {
         folderService.saveFileInFolder(file, folderName);
-        return "redirect:/folder/"+folderName;
+        return "redirect:/folder/" + folderName;
     }
 
     @GetMapping(value = "/", params = {"createFolder"})
@@ -141,7 +143,7 @@ public class HomeController {
         List<File> filesInFolder = folder.getFiles();
         ByteArrayOutputStream bo = new ByteArrayOutputStream();
         ZipOutputStream zipOutputStream = new ZipOutputStream(bo);
-        for (File file: filesInFolder) {
+        for (File file : filesInFolder) {
             String fileName = file.getId() + "_" + file.getName();
             ZipEntry zipEntry = new ZipEntry(file.getName());
             zipOutputStream.putNextEntry(zipEntry);
@@ -150,8 +152,17 @@ public class HomeController {
         }
         zipOutputStream.close();
         return ResponseEntity.ok().contentType(MediaType.valueOf("application/zip"))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + folderName +".zip"+"\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + folderName + ".zip" + "\"")
                 .body(new ByteArrayResource(bo.toByteArray()));
+    }
+
+    @GetMapping("/share/{folderName}.zip")
+    public String shareFolder(@PathVariable("folderName") String folderName, Model model) {
+        this.url = MvcUriComponentsBuilder
+                .fromMethodName(HomeController.class, "downloadFolder", folderName).build().toString();
+        this.fileId = -1;
+        model.addAttribute("guestUsers", userService.getAllUsers());
+        return "sharefile";
     }
 
     @GetMapping("/view/file{fileId}")
@@ -226,7 +237,6 @@ public class HomeController {
         return "sharefile";
     }
 
-
     @PostMapping(value = "/share", params = {"add"})
     public String addEmail(@RequestParam("email") String email, Model model) {
         emailsSelected.add(email);
@@ -247,7 +257,9 @@ public class HomeController {
     public String sendFile(@RequestParam("edit") boolean access) throws MessagingException, IOException {
         int userId = this.user.getId();
         int[] guestIds = userService.getIdsByEmail(emailsSelected);
-        ownerGuestService.save(userId, fileId, guestIds, access);
+        if(this.fileId >= 0) {
+            ownerGuestService.save(userId, fileId, guestIds, access);
+        }
         String[] emails = Arrays.copyOf(emailsSelected.toArray(), emailsSelected.size(),
                 String[].class);
         SimpleMailMessage msg = new SimpleMailMessage();
@@ -294,5 +306,12 @@ public class HomeController {
     @GetMapping("/main")
     public String returnMain(Model model) {
         return "main";
+    }
+
+    @GetMapping("/search")
+    public String viewSearchedPost(@RequestParam(name = "search") String keyword, Model model) {
+        List<File> files = fileRepository.getFilesByKeyword(this.user.getId(), keyword.toLowerCase(Locale.ROOT));
+        model.addAttribute("files", files);
+        return "home";
     }
 }

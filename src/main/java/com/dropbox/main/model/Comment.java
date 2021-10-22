@@ -32,7 +32,7 @@ public class Comment {
     @Column(name = "email")
     private String email;
 
-    @Column( name = "comment")
+    @Column(name = "comment")
     private String comment;
 
     @CreationTimestamp
