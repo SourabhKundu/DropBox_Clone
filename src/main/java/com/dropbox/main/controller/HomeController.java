@@ -154,6 +154,15 @@ public class HomeController {
                 .body(new ByteArrayResource(bo.toByteArray()));
     }
 
+    @GetMapping("/share/{folderName}.zip")
+    public String shareFolder(@PathVariable("folderName") String folderName, Model model) {
+        this.url = MvcUriComponentsBuilder
+                .fromMethodName(HomeController.class, "downloadFolder", folderName).build().toString();
+        System.out.println("url  "+this.url);
+        model.addAttribute("guestUsers", userService.getAllUsers());
+        return "sharefile";
+    }
+
     @GetMapping("/view/file{fileId}")
     public ResponseEntity<ByteArrayResource> viewFile(@PathVariable("fileId") int id) throws FileNotFoundException {
         File file = fileService.getFile(id);
