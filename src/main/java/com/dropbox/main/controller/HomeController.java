@@ -1,6 +1,7 @@
 package com.dropbox.main.controller;
 
 import com.dropbox.main.model.*;
+import com.dropbox.main.repository.FileRepository;
 import com.dropbox.main.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -36,6 +37,7 @@ public class HomeController {
     private final OwnerGuestService ownerGuestService;
     private final StorageService storageService;
     private final FolderService folderService;
+    private final FileRepository fileRepository;
     JavaMailSender javaMailSender = getJavaMailSender();
     private int fileId;
     private String url;
@@ -47,7 +49,9 @@ public class HomeController {
                           UserService userService,
                           StorageService storageService,
                           FolderService folderService,
-                          OwnerGuestService ownerGuestService) {
+                          OwnerGuestService ownerGuestService,
+                          FileRepository fileRepository) {
+        this.fileRepository = fileRepository;
         this.ownerGuestService = ownerGuestService;
         this.userService = userService;
         this.fileService = fileService;
@@ -303,5 +307,12 @@ public class HomeController {
     @GetMapping("/main")
     public String returnMain(Model model) {
         return "main";
+    }
+
+    @GetMapping("/search")
+    public String viewSearchedPost(@RequestParam(name = "search") String keyword,Model model){
+        List<File> files = fileRepository.getFilesByKeyword(this.user.getId(),keyword.toLowerCase(Locale.ROOT));
+        model.addAttribute("files",files);
+        return "home";
     }
 }
