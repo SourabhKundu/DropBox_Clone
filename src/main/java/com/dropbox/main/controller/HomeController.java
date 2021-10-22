@@ -271,4 +271,9 @@ public class HomeController {
         }
         return "share";
     }
+
+    @GetMapping("/main")
+    public String returnMain(Model model) {
+        return "main";
+    }
 }
