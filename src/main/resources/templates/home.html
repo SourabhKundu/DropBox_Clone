@@ -16,40 +16,6 @@
            display: flex;
            flex-basis: auto;
        }
-<!--       #button-main {-->
-<!--           padding-left: 20px;-->
-<!--           padding-right: 30px;-->
-<!--       }-->
-<!--       #files-table {-->
-<!--        border-collapse: collapse;-->
-<!--        border: inset;-->
-<!--        width: 60%;-->
-<!--        margin-left: 10%;-->
-<!--       }-->
-<!--       .files-table-row {-->
-<!--           text-align: center;-->
-<!--       }-->
-<!--       #action-div {-->
-<!--          display: flex;-->
-<!--          flex-direction: row;-->
-<!--          margin-left: 30%;-->
-<!--       }-->
-<!--       .anchor {-->
-<!--           text-decoration: none;-->
-<!--       }-->
-<!--       #folder-div {-->
-<!--           margin-left: 15%;-->
-<!--           margin-right: 15%;-->
-<!--           display: grid;-->
-<!--           grid-template-columns: 1fr 1fr 1fr 1fr 1fr;-->
-<!--       }-->
-<!--       #file-upload-form {-->
-<!--           display: flex;-->
-<!--           flex-basis: auto;-->
-<!--       }-->
-<!--       #create-folder-div {-->
-<!--           margin-left: 30%;-->
-<!--       }-->
            #navbar {
                height : 60px;
                border-bottom : 1px solid grey;
@@ -71,11 +37,8 @@
                height : 70px;
            }
            #deleteButton{
-               margin-bottom : 5px;
+               margin-right : 5px;
            }
-
-
-
 
     </style>
 </head>
@@ -85,7 +48,10 @@
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Dropbox_logo_2017.svg/2560px-Dropbox_logo_2017.svg.png"
              alt="DropBox" height="30px" width="145px">
     </a>
-
+    <form class="form-inline">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
+    </form>
     <span sec:authorize="isAuthenticated()">
             <a class="text-decoration-none" th:href="@{/logout}">
                 <button class="btn btn-outline-secondary my-2 my-sm-0">Logout</button>
@@ -105,7 +71,7 @@
             <div class="col">
                 <form th:action="@{/}">
                     <input th:type="hidden" th:name="createFolder" th:value="true">
-                    <button th:type="submit" class="btn btn-secondary">Folder</button>
+                    <button th:type="submit" class="btn btn-secondary">New Folder</button>
                 </form>
             </div>
             <div class="col">
@@ -183,7 +149,7 @@
                     <td><a class="text-decoration-none" th:href="@{/view/file{id}(id = ${file.id})}" th:text="View"></a></td>
                     <td>
                         <div id="action-main">
-                            <div id="action-div">
+                            <div id="action-div" style="display : flex">
                                 <!--                        <form th:action="@{/edit}" th:if="${fileId} != ${file.id}">-->
                                 <!--                            <input th:type="hidden" th:name="fileId" th:value="${file.id}">-->
                                 <!--                            <input th:type="submit" th:value="Edit"/>-->

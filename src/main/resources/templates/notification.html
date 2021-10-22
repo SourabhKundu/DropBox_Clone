@@ -103,11 +103,14 @@
         </thead>
         <tr th:each="notification : ${notificationList}">
             <th scope="row" th:text="${notification.sharedBy}"></th>
-            <td><a th:href="@{/showComment/file{id}(id = ${notification.fileId})}" th:text="${notification.fileName}"></a></td>
-            <td><a th:href="@{/download/file{id}(id = ${notification.fileId})}" th:text="Download"></a></td>
-            <td><a th:href="@{/view/file{id}(id = ${notification.fileId})}" th:text="View"></a></td>
+            <td><a class="text-decoration-none" th:href="@{/showComment/file{id}(id = ${notification.fileId})}"
+                   th:text="${notification.fileName}"></a></td>
+            <td><a class="text-decoration-none" th:href="@{/download/file{id}(id = ${notification.fileId})}"
+                   th:text="Download"></a></td>
+            <td><a class="text-decoration-none" th:href="@{/view/file{id}(id = ${notification.fileId})}"
+                   th:text="View"></a></td>
             <td>
-                <a th:href="@{/comment/file{id}(id = ${notification.fileId})}">
+                <a class="text-decoration-none" th:href="@{/comment/file{id}(id = ${notification.fileId})}">
                     <button class="btn btn-secondary">Comment</button>
                 </a>
             </td>
@@ -115,15 +118,6 @@
     </table>
     </div>
     </div>
-</div>
-<div class="container" align="center">
-<div class="comment" th:if="${comment} == true">
-    <form th:action="@{/saveComment}" method="post">
-        Add a comment : <input type="text" name="comment"></input>
-        <input type="hidden" name="fileId" th:value="${fileId}">
-        <button class="btn btn-secondary" type="submit">Comment</button>
-    </form>
-</div>
 </div>
 </body>
 </html>

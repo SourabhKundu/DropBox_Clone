@@ -53,13 +53,13 @@ public class CommentController {
         File file = fileService.getFile(fileId);
         model.addAttribute("fileId",fileId);
         model.addAttribute("comment",true);
-        return "notification";
+        return showComment(fileId,model);
     }
 
     @PostMapping("/saveComment")
     public String saveComment(@RequestParam("fileId") int fileId,
                               @RequestParam("comment") String commentText,
-                              Model model){
+                              Model model) throws FileNotFoundException {
         this.user=userService.getCurrentUser();
         Comment comment = new Comment();
         comment.setComment(commentText);
@@ -67,7 +67,7 @@ public class CommentController {
         comment.setName(this.user.getName());
         comment.setFileId(fileId);
         commentRepository.save(comment);
-        return homeController.notification(model);
+        return showComment(fileId,model);
     }
 
     @GetMapping("/comment/edit/{commentId}")
