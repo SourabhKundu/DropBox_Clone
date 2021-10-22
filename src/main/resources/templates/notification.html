@@ -94,10 +94,9 @@
     <table class="table table-hover">
         <thead>
         <tr>
-            <th scope="col" th:text="sharedby"></th>
+            <th scope="col" th:text="sharedBy"></th>
             <th scope="col" th:text="Name"></th>
-            <th scope="col" th:text="Download"></th>
-            <th scope="col" th:text="View"></th>
+            <th scope="col" th:text="Access"></th>
             <th scope="col" th:text="Action"></th>
         </tr>
         </thead>
@@ -105,9 +104,9 @@
             <th scope="row" th:text="${notification.sharedBy}"></th>
             <td><a class="text-decoration-none" th:href="@{/showComment/file{id}(id = ${notification.fileId})}"
                    th:text="${notification.fileName}"></a></td>
-            <td><a class="text-decoration-none" th:href="@{/download/file{id}(id = ${notification.fileId})}"
+            <td th:if="${notification.access}"><a class="text-decoration-none" th:href="@{/download/file{id}(id = ${notification.fileId})}"
                    th:text="Download"></a></td>
-            <td><a class="text-decoration-none" th:href="@{/view/file{id}(id = ${notification.fileId})}"
+            <td th:if="${!notification.access}"><a class="text-decoration-none" th:href="@{/view/file{id}(id = ${notification.fileId})}"
                    th:text="View"></a></td>
             <td>
                 <a class="text-decoration-none" th:href="@{/comment/file{id}(id = ${notification.fileId})}">
