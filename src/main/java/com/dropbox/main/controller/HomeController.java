@@ -135,6 +135,25 @@ public class HomeController {
                 .body(new ByteArrayResource(fileData));
     }
 
+    @GetMapping("/download/{folderName}.zip")
+    public ResponseEntity<ByteArrayResource> downloadFolder(@PathVariable("folderName") String folderName) throws IOException {
+        Folder folder = folderService.getFolder(folderName);
+        List<File> filesInFolder = folder.getFiles();
+        ByteArrayOutputStream bo = new ByteArrayOutputStream();
+        ZipOutputStream zipOutputStream = new ZipOutputStream(bo);
+        for (File file: filesInFolder) {
+            String fileName = file.getId() + "_" + file.getName();
+            ZipEntry zipEntry = new ZipEntry(file.getName());
+            zipOutputStream.putNextEntry(zipEntry);
+            zipOutputStream.write(storageService.downloadFile(fileName));
+            zipOutputStream.closeEntry();
+        }
+        zipOutputStream.close();
+        return ResponseEntity.ok().contentType(MediaType.valueOf("application/zip"))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + folderName +".zip"+"\"")
+                .body(new ByteArrayResource(bo.toByteArray()));
+    }
+
     @GetMapping("/view/file{fileId}")
     public ResponseEntity<ByteArrayResource> viewFile(@PathVariable("fileId") int id) throws FileNotFoundException {
         File file = fileService.getFile(id);
