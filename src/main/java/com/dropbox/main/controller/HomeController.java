@@ -84,12 +84,13 @@ public class HomeController {
     public String getHome(Model model) {
         this.user = userService.getCurrentUser();
         if (this.user == null) {
-            return "redirect:/login";
+            return "main";
+        } else {
+            model.addAttribute("files", fileService.getFiles(this.user.getId()));
+            model.addAttribute("folders", folderService.getFoldersByUserId(this.user.getId()));
+            model.addAttribute("createFolder", "false");
+            return "home";
         }
-        model.addAttribute("files", fileService.getFiles(this.user.getId()));
-        model.addAttribute("folders", folderService.getFoldersByUserId(this.user.getId()));
-        model.addAttribute("createFolder", "false");
-        return "home";
     }
 
     @PostMapping("/folder")
@@ -301,11 +302,6 @@ public class HomeController {
             model.addAttribute("shareList", shareList);
         }
         return "share";
-    }
-
-    @GetMapping("/main")
-    public String returnMain(Model model) {
-        return "main";
     }
 
     @GetMapping("/search")
