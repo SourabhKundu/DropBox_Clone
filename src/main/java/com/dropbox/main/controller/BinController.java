@@ -7,6 +7,9 @@ import com.dropbox.main.service.FileService;
 import com.dropbox.main.service.FolderService;
 import com.dropbox.main.service.StorageService;
 import com.dropbox.main.service.UserService;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.FileNotFoundException;
+import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/")
@@ -36,8 +41,22 @@ public class BinController {
     }
 
     @GetMapping("/bin")
-    public String getDeletedFiles(Model model) {
+    public String getDeletedFiles(Model model) throws FileNotFoundException {
         this.user = userService.getCurrentUser();
+        List<File> files= fileService.getDeletedFiles(this.user.getId());
+        for (File file : files) {
+            int compareTime = DateTime.now().toDate().compareTo(file.getCreatedAt());
+            if(compareTime > 29) {
+                File file1 = fileService.delete(file.getId());
+            }
+        }
+        List<Folder> folders = folderService.getAllDeletedFolders(this.user.getId());
+        for (Folder folder : folders) {
+            int compareTime = DateTime.now().toDate().compareTo(folder.getCreatedAt());
+            if(compareTime > 29) {
+                folderService.deleteFolder(folder);
+            }
+        }
         model.addAttribute("files", fileService.getDeletedFiles(this.user.getId()));
         model.addAttribute("deletedFolders", folderService.getAllDeletedFolders(this.user.getId()));
         return "bin";
