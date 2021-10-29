@@ -44,17 +44,21 @@ public class BinController {
     public String getDeletedFiles(Model model) throws FileNotFoundException {
         this.user = userService.getCurrentUser();
         List<File> files= fileService.getDeletedFiles(this.user.getId());
-        for (File file : files) {
-            int compareTime = DateTime.now().toDate().compareTo(file.getCreatedAt());
-            if(compareTime > 29) {
-                File file1 = fileService.delete(file.getId());
+        if (files != null) {
+            for (File file : files) {
+                int compareTime = DateTime.now().toDate().compareTo(file.getCreatedAt());
+                if(compareTime > 29) {
+                    File file1 = fileService.delete(file.getId());
+                }
             }
         }
         List<Folder> folders = folderService.getAllDeletedFolders(this.user.getId());
-        for (Folder folder : folders) {
-            int compareTime = DateTime.now().toDate().compareTo(folder.getCreatedAt());
-            if(compareTime > 29) {
-                folderService.deleteFolder(folder);
+        if(folders != null) {
+            for (Folder folder : folders) {
+                int compareTime = DateTime.now().toDate().compareTo(folder.getCreatedAt());
+                if(compareTime > 29) {
+                    folderService.deleteFolder(folder);
+                }
             }
         }
         model.addAttribute("files", fileService.getDeletedFiles(this.user.getId()));
